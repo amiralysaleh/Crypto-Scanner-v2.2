@@ -49,7 +49,7 @@ SCALPING_SETTINGS = {
     'volume_change_threshold': 1.5,
     'profit_target_percent': 1.5,
     'stop_loss_percent': 0.8,
-    'min_score_threshold': 55,
+    'min_score_threshold': 50,
     'trend_confirmation_window': 10,
 }
 
