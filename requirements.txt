@@ -4,3 +4,4 @@ numpy
 python-telegram-bot
 ta
 pytz
+openpyxl
