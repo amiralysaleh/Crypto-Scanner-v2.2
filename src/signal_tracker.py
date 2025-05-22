@@ -9,7 +9,6 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from filelock import FileLock
 from config import SIGNALS_FILE, KUCOIN_BASE_URL, KUCOIN_TICKER_ENDPOINT
-from telegram_sender import send_telegram_message
 
 def load_signals():
     """بارگذاری سیگنال‌ها از فایل JSON"""
@@ -26,7 +25,6 @@ def load_signals():
                         signal['status'] = 'active'
                     if 'created_at' not in signal:
                         signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
-                    # اصلاح زمان‌ها برای افزودن منطقه زمانی
                     try:
                         created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S")
                         if created_at.tzinfo is None:
@@ -96,14 +94,34 @@ def get_current_price(symbol):
         print(f"Error fetching price for {symbol}: {e}")
         return None
 
-def calculate_profit_loss(signal, current_price):
+def get_historical_klines(symbol, start_time, end_time, kline_type='1hour'):
+    """دریافت کندل‌های تاریخی از KuCoin"""
+    url = f"{KUCOIN_BASE_URL}/api/v1/market/history/kline"
+    params = {
+        "symbol": symbol,
+        "startAt": int(start_time.timestamp()),
+        "endAt": int(end_time.timestamp()),
+        "type": kline_type
+    }
+    try:
+        response = requests.get(url, params=params, timeout=15)
+        response.raise_for_status()
+        data = response.json()
+        if data['code'] == '200000':
+            klines = data['data']
+            print(f"Retrieved {len(klines)} klines for {symbol} from {start_time} to {end_time}")
+            return klines  # [[timestamp, open, close, high, low, volume, amount], ...]
+        print(f"Error fetching klines for {symbol}: {data}")
+        return []
+    except Exception as e:
+        print(f"Error fetching klines for {symbol}: {e}")
+        return []
+
+def calculate_profit_loss(signal, close_price):
     """محاسبه درصد سود/زیان"""
     try:
         entry_price = float(signal.get('entry_price', signal['current_price']))
-        if signal['status'] in ['target_reached', 'stop_loss']:
-            close_price = float(signal.get('closed_price', current_price))
-        else:
-            close_price = current_price if current_price else entry_price
+        close_price = float(close_price)
         if signal['type'] == 'خرید':
             return ((close_price - entry_price) / entry_price) * 100
         else:  # فروش
@@ -135,7 +153,7 @@ def calculate_duration(created_at, closed_at):
         return None
 
 def update_signal_status():
-    """به‌روزرسانی وضعیت سیگنال‌ها"""
+    """به‌روزرسانی وضعیت سیگنال‌ها با بررسی کندل‌ها"""
     signals = load_signals()
     if not signals:
         print("No signals to update")
@@ -143,14 +161,19 @@ def update_signal_status():
 
     updated = False
     tehran_tz = pytz.timezone('Asia/Tehran')
+    now = datetime.now(tehran_tz)
+
     for signal in signals:
         if signal['status'] != 'active':
             print(f"Skipping {signal['symbol']}: Already {signal['status']}")
             continue
 
-        current_price = get_current_price(signal['symbol'])
-        if current_price is None:
-            print(f"Skipping update for {signal['symbol']} due to missing price")
+        try:
+            created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S")
+            if created_at.tzinfo is None:
+                created_at = tehran_tz.localize(created_at)
+        except ValueError:
+            print(f"Invalid created_at for {signal['symbol']}")
             continue
 
         try:
@@ -160,40 +183,79 @@ def update_signal_status():
             print(f"Invalid target_price or stop_loss for {signal['symbol']}: {e}")
             continue
 
-        now_str = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
+        # دریافت کندل‌های تاریخی از created_at تا اکنون
+        klines = get_historical_klines(signal['symbol'], created_at, now, kline_type='1hour')
+        if not klines:
+            print(f"No klines retrieved for {signal['symbol']}, skipping update")
+            continue
 
-        if signal['type'] == 'خرید':
-            if current_price >= target_price:
-                signal['status'] = 'target_reached'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
+        # بررسی کندل‌ها برای تارگت یا استاپ‌لاس
+        for kline in klines:
+            try:
+                timestamp, open_price, close_price, high_price, low_price, volume, amount = kline
+                timestamp = int(timestamp)
+                high_price = float(high_price)
+                low_price = float(low_price)
+                close_price = float(close_price)
+                kline_time = datetime.fromtimestamp(timestamp, tz=tehran_tz)
+            except (ValueError, TypeError) as e:
+                print(f"Invalid kline data for {signal['symbol']}: {e}")
+                continue
+
+            # بررسی تارگت یا استاپ‌لاس
+            hit_target = False
+            hit_stop_loss = False
+            if signal['type'] == 'خرید':
+                if high_price >= target_price:
+                    hit_target = True
+                elif low_price <= stop_loss:
+                    hit_stop_loss = True
+            elif signal['type'] == 'فروش':
+                if low_price <= target_price:
+                    hit_target = True
+                elif high_price >= stop_loss:
+                    hit_stop_loss = True
+
+            if hit_target or hit_stop_loss:
+                signal['status'] = 'target_reached' if hit_target else 'stop_loss'
+                signal['closed_price'] = str(close_price)
+                signal['closed_at'] = kline_time.strftime("%Y-%m-%d %H:%M:%S")
                 updated = True
-                print(f"Updated {signal['symbol']}: Target reached at {current_price}")
-            elif current_price <= stop_loss:
-                signal['status'] = 'stop_loss'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
-                updated = True
-                print(f"Updated {signal['symbol']}: Stop loss hit at {current_price}")
-        elif signal['type'] == 'فروش':
-            if current_price <= target_price:
-                signal['status'] = 'target_reached'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
-                updated = True
-                print(f"Updated {signal['symbol']}: Target reached at {current_price}")
-            elif current_price >= stop_loss:
-                signal['status'] = 'stop_loss'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
-                updated = True
-                print(f"Updated {signal['symbol']}: Stop loss hit at {current_price}")
+                print(f"Updated {signal['symbol']}: {'Target reached' if hit_target else 'Stop loss hit'} at {close_price} on {signal['closed_at']}")
+                break  # اولین برخورد را ثبت کرده و خارج می‌شویم
 
     if updated:
         save_signals(signals)
         print("Signals updated successfully")
     else:
         print("No signals were updated")
+
+def send_telegram_message(message):
+    """ارسال پیام به تلگرام"""
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+
+    if not bot_token or not chat_id:
+        print("Error: Telegram credentials not set")
+        return False
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    data = {
+        'chat_id': chat_id,
+        'text': message,
+        'parse_mode': 'Markdown'
+    }
+    try:
+        response = requests.post(url, json=data, timeout=15)
+        if response.status_code == 200:
+            print("Telegram message sent successfully")
+            return True
+        else:
+            print(f"Error sending Telegram message: {response.text}")
+            return False
+    except Exception as e:
+        print(f"Error sending Telegram message: {e}")
+        return False
 
 def send_telegram_file(file_path):
     """ارسال فایل به تلگرام"""
@@ -240,7 +302,7 @@ def generate_excel_report():
     active_signals_data = []
     for signal in signals:
         current_price = get_current_price(signal['symbol']) if signal['status'] == 'active' else None
-        profit_loss = calculate_profit_loss(signal, current_price)
+        profit_loss = calculate_profit_loss(signal, signal.get('closed_price', current_price))
         duration = calculate_duration(signal['created_at'], signal.get('closed_at'))
         
         signal_row = {
@@ -368,7 +430,7 @@ def generate_excel_report():
         print("Failed to send Excel file to Telegram")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Track and report signal status')
+    parser = argparse.ArgumentParser(description='Track Vettel and report signal status')
     parser.add_argument('--report', action='store_true', help='Generate and send a status report')
     args = parser.parse_args()
 
