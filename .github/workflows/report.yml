@@ -2,7 +2,7 @@ name: Generate Signal Reports
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # هر 6 ساعت
+    - cron: '0 */1 * * *'  # هر 6 ساعت
   workflow_dispatch:
 
 jobs:
