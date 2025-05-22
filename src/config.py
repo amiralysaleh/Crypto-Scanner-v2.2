@@ -36,8 +36,8 @@ KUCOIN_SUPPORTED_PAIRS = {
 # تنظیمات استراتژی اسکالپینگ با سیستم امتیازدهی
 SCALPING_SETTINGS = {
     'rsi_period': 14,
-    'rsi_overbought': 65,
-    'rsi_oversold': 35,
+    'rsi_overbought': 60,
+    'rsi_oversold': 40,
     'ema_short': 8,
     'ema_medium': 21,
     'ema_long': 50,
