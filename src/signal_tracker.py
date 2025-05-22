@@ -7,7 +7,7 @@ import pytz
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
-from filelock import FileLock  # برای قفل فایل
+from filelock import FileLock
 from config import SIGNALS_FILE, KUCOIN_BASE_URL, KUCOIN_TICKER_ENDPOINT
 from telegram_sender import send_telegram_message
 
@@ -18,13 +18,15 @@ def load_signals():
             with open(SIGNALS_FILE, 'r') as f:
                 content = f.read()
                 signals = json.loads(content) if content.strip() else []
-                # اعتبارسنجی ساختار سیگنال‌ها
+                print(f"Loaded {len(signals)} signals from {SIGNALS_FILE}")
                 for signal in signals:
                     if 'status' not in signal or signal['status'] not in ['active', 'target_reached', 'stop_loss']:
-                        signal['status'] = 'active'  # پیش‌فرض برای سیگنال‌های ناقص
+                        print(f"Fixing invalid status for {signal.get('symbol', 'unknown')}")
+                        signal['status'] = 'active'
                     if 'created_at' not in signal:
                         signal['created_at'] = datetime.now(pytz.timezone('Asia/Tehran')).strftime("%Y-%m-%d %H:%M:%S")
                 return signals
+        print(f"No signals found at {SIGNALS_FILE}")
         return []
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from {SIGNALS_FILE}: {e}")
@@ -41,9 +43,10 @@ def save_signals(signals):
             os.makedirs(os.path.dirname(SIGNALS_FILE), exist_ok=True)
             with open(SIGNALS_FILE, 'w') as f:
                 json.dump(signals, f, indent=2)
-            print(f"Signals saved to {SIGNALS_FILE}")
+            print(f"Saved {len(signals)} signals to {SIGNALS_FILE}")
     except Exception as e:
         print(f"Error saving signals: {e}")
+        send_telegram_message(f"❌ خطا در ذخیره سیگنال‌ها: {e}")
 
 def save_signal(signal):
     """ذخیره یک سیگنال جدید"""
@@ -112,7 +115,6 @@ def update_signal_status():
     updated = False
     tehran_tz = pytz.timezone('Asia/Tehran')
     for signal in signals:
-        # فقط سیگنال‌های فعال بررسی شوند
         if signal['status'] != 'active':
             print(f"Skipping {signal['symbol']}: Already {signal['status']}")
             continue
