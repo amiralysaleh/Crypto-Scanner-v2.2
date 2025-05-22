@@ -1,0 +1,1 @@
+# Crypto-Scanner-v2.2
