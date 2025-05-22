@@ -46,11 +46,11 @@ SCALPING_SETTINGS = {
     'macd_signal': 9,
     'bb_period': 20,
     'bb_std': 2.5,
-    'volume_change_threshold': 2.0,
+    'volume_change_threshold': 1.5,
     'profit_target_percent': 1.5,
     'stop_loss_percent': 0.8,
-    'min_score_threshold': 75,
-    'trend_confirmation_window': 20,
+    'min_score_threshold': 60,
+    'trend_confirmation_window': 10,
 }
 
 # تنظیمات تایم فریم‌ها
