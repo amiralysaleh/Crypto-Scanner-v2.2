@@ -46,6 +46,16 @@ def fetch_kline_data(symbol, size=100, interval="30min"):
         print(traceback.format_exc())
         return None
 
+def check_trend_consistency(trend_series):
+    """بررسی یکنواختی روند در پنجره زمانی"""
+    if len(trend_series) == 0:
+        return 'neutral'
+    if all(trend == 'up' for trend in trend_series):
+        return 'up'
+    if all(trend == 'down' for trend in trend_series):
+        return 'down'
+    return 'neutral'
+
 def prepare_dataframe(df, timeframe=PRIMARY_TIMEFRAME):
     """اضافه کردن اندیکاتورهای تکنیکال و قواعد اکشن پرایس"""
     if df is None or len(df) < SCALPING_SETTINGS['trend_confirmation_window']:
@@ -81,12 +91,14 @@ def prepare_dataframe(df, timeframe=PRIMARY_TIMEFRAME):
 
         # شناسایی روند در تایم فریم
         df['trend'] = np.where(df['ema_short'] > df['ema_long'], 'up', 'down')
+        
+        # محاسبه روند تأیید شده
         if timeframe == PRIMARY_TIMEFRAME:
-            df['trend_confirmed'] = df['trend'].rolling(window=SCALPING_SETTINGS['trend_confirmation_window']).apply(
-                lambda x: 'up' if (x == 'up').all() else 'down' if (x == 'down').all() else 'neutral'
-            )
+            df['trend_confirmed'] = df['trend'].rolling(
+                window=SCALPING_SETTINGS['trend_confirmation_window'], 
+                min_periods=SCALPING_SETTINGS['trend_confirmation_window']
+            ).apply(check_trend_consistency, raw=False)
         else:
-            # برای تایم فریم بالاتر، فقط روند را مشخص می‌کنیم
             df['trend_confirmed'] = df['trend']
 
         return df
