@@ -94,10 +94,15 @@ def prepare_dataframe(df, timeframe=PRIMARY_TIMEFRAME):
         
         # محاسبه روند تأیید شده
         if timeframe == PRIMARY_TIMEFRAME:
-            df['trend_confirmed'] = df['trend'].rolling(
-                window=SCALPING_SETTINGS['trend_confirmation_window'], 
-                min_periods=SCALPING_SETTINGS['trend_confirmation_window']
-            ).apply(check_trend_consistency, raw=False)
+            window = SCALPING_SETTINGS['trend_confirmation_window']
+            trend_confirmed = []
+            for i in range(len(df)):
+                if i < window - 1:
+                    trend_confirmed.append('neutral')
+                else:
+                    trend_slice = df['trend'].iloc[i - window + 1:i + 1]
+                    trend_confirmed.append(check_trend_consistency(trend_slice))
+            df['trend_confirmed'] = trend_confirmed
         else:
             df['trend_confirmed'] = df['trend']
 
