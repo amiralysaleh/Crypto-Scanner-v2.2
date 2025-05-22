@@ -7,6 +7,7 @@ import pytz
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+from filelock import FileLock  # برای قفل فایل
 from config import SIGNALS_FILE, KUCOIN_BASE_URL, KUCOIN_TICKER_ENDPOINT
 from telegram_sender import send_telegram_message
 
@@ -16,22 +17,31 @@ def load_signals():
         if os.path.exists(SIGNALS_FILE):
             with open(SIGNALS_FILE, 'r') as f:
                 content = f.read()
-                return json.loads(content) if content.strip() else []
+                signals = json.loads(content) if content.strip() else []
+                # اعتبارسنجی ساختار سیگنال‌ها
+                for signal in signals:
+                    if 'status' not in signal or signal['status'] not in ['active', 'target_reached', 'stop_loss']:
+                        signal['status'] = 'active'  # پیش‌فرض برای سیگنال‌های ناقص
+                    if 'created_at' not in signal:
+                        signal['created_at'] = datetime.now(pytz.timezone('Asia/Tehran')).strftime("%Y-%m-%d %H:%M:%S")
+                return signals
         return []
-    except json.JSONDecodeError:
-        print(f"Error decoding JSON from {SIGNALS_FILE}")
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON from {SIGNALS_FILE}: {e}")
         return []
     except Exception as e:
         print(f"Error loading signals: {e}")
         return []
 
 def save_signals(signals):
-    """ذخیره سیگنال‌ها در فایل JSON"""
+    """ذخیره سیگنال‌ها در فایل JSON با قفل فایل"""
+    lock = FileLock(f"{SIGNALS_FILE}.lock")
     try:
-        os.makedirs(os.path.dirname(SIGNALS_FILE), exist_ok=True)
-        with open(SIGNALS_FILE, 'w') as f:
-            json.dump(signals, f, indent=2)
-        print(f"Signals saved to {SIGNALS_FILE}")
+        with lock:
+            os.makedirs(os.path.dirname(SIGNALS_FILE), exist_ok=True)
+            with open(SIGNALS_FILE, 'w') as f:
+                json.dump(signals, f, indent=2)
+            print(f"Signals saved to {SIGNALS_FILE}")
     except Exception as e:
         print(f"Error saving signals: {e}")
 
@@ -39,6 +49,11 @@ def save_signal(signal):
     """ذخیره یک سیگنال جدید"""
     if 'entry_price' not in signal:
         signal['entry_price'] = signal.get('current_price')
+    if 'status' not in signal:
+        signal['status'] = 'active'
+    if 'created_at' not in signal:
+        signal['created_at'] = datetime.now(pytz.timezone('Asia/Tehran')).strftime("%Y-%m-%d %H:%M:%S")
+    
     signals = load_signals()
     signals.append(signal)
     save_signals(signals)
@@ -97,7 +112,9 @@ def update_signal_status():
     updated = False
     tehran_tz = pytz.timezone('Asia/Tehran')
     for signal in signals:
+        # فقط سیگنال‌های فعال بررسی شوند
         if signal['status'] != 'active':
+            print(f"Skipping {signal['symbol']}: Already {signal['status']}")
             continue
 
         current_price = get_current_price(signal['symbol'])
@@ -296,6 +313,7 @@ def generate_excel_report():
         print(f"Excel report generated: {output_file}")
     except Exception as e:
         print(f"Error saving Excel report: {e}")
+        send_telegram_message(f"❌ خطا در تولید فایل Excel: {e}")
         return
 
     # ارسال اعلان و فایل به تلگرام
