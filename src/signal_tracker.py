@@ -19,12 +19,27 @@ def load_signals():
                 content = f.read()
                 signals = json.loads(content) if content.strip() else []
                 print(f"Loaded {len(signals)} signals from {SIGNALS_FILE}")
+                tehran_tz = pytz.timezone('Asia/Tehran')
                 for signal in signals:
                     if 'status' not in signal or signal['status'] not in ['active', 'target_reached', 'stop_loss']:
                         print(f"Fixing invalid status for {signal.get('symbol', 'unknown')}")
                         signal['status'] = 'active'
                     if 'created_at' not in signal:
-                        signal['created_at'] = datetime.now(pytz.timezone('Asia/Tehran')).strftime("%Y-%m-%d %H:%M:%S")
+                        signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
+                    # اصلاح زمان‌ها برای افزودن منطقه زمانی
+                    try:
+                        created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S")
+                        if created_at.tzinfo is None:
+                            signal['created_at'] = tehran_tz.localize(created_at).strftime("%Y-%m-%d %H:%M:%S")
+                    except ValueError:
+                        signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
+                    if 'closed_at' in signal and signal['closed_at']:
+                        try:
+                            closed_at = datetime.strptime(signal['closed_at'], "%Y-%m-%d %H:%M:%S")
+                            if closed_at.tzinfo is None:
+                                signal['closed_at'] = tehran_tz.localize(closed_at).strftime("%Y-%m-%d %H:%M:%S")
+                        except ValueError:
+                            signal['closed_at'] = None
                 return signals
         print(f"No signals found at {SIGNALS_FILE}")
         return []
@@ -50,12 +65,13 @@ def save_signals(signals):
 
 def save_signal(signal):
     """ذخیره یک سیگنال جدید"""
+    tehran_tz = pytz.timezone('Asia/Tehran')
     if 'entry_price' not in signal:
         signal['entry_price'] = signal.get('current_price')
     if 'status' not in signal:
         signal['status'] = 'active'
     if 'created_at' not in signal:
-        signal['created_at'] = datetime.now(pytz.timezone('Asia/Tehran')).strftime("%Y-%m-%d %H:%M:%S")
+        signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
     
     signals = load_signals()
     signals.append(signal)
@@ -72,6 +88,7 @@ def get_current_price(symbol):
         data = response.json()
         price = data.get('data', {}).get('price')
         if price:
+            print(f"Price for {symbol}: {price}")
             return float(price)
         print(f"No price data for {symbol}: {data}")
         return None
@@ -97,10 +114,22 @@ def calculate_profit_loss(signal, current_price):
 
 def calculate_duration(created_at, closed_at):
     """محاسبه مدت‌زمان سیگنال (به ساعت)"""
+    tehran_tz = pytz.timezone('Asia/Tehran')
     try:
         created = datetime.strptime(created_at, "%Y-%m-%d %H:%M:%S")
-        closed = datetime.strptime(closed_at, "%Y-%m-%d %H:%M:%S") if closed_at else datetime.now(pytz.timezone('Asia/Tehran'))
-        return (closed - created).total_seconds() / 3600
+        if created.tzinfo is None:
+            created = tehran_tz.localize(created)
+        
+        if closed_at:
+            closed = datetime.strptime(closed_at, "%Y-%m-%d %H:%M:%S")
+            if closed.tzinfo is None:
+                closed = tehran_tz.localize(closed)
+        else:
+            closed = datetime.now(tehran_tz)
+        
+        duration_hours = (closed - created).total_seconds() / 3600
+        print(f"Duration calculated: {duration_hours:.2f} hours for created_at={created_at}, closed_at={closed_at}")
+        return duration_hours
     except (ValueError, TypeError) as e:
         print(f"Error calculating duration: {e}")
         return None
