@@ -1,0 +1,6 @@
+requests
+pandas
+numpy
+python-telegram-bot
+ta
+pytz
