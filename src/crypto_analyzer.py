@@ -13,7 +13,7 @@ from telegram_sender import send_telegram_message
 from signal_tracker import save_signal, load_signals
 
 def fetch_kline_data(symbol, size=100, interval="30min"):
-    """دریافت داده‌های کندل از KuCoin با تلاش مجدد"""
+    """Fetch kline data from KuCoin with retry"""
     url = f"{KUCOIN_BASE_URL}{KUCOIN_KLINE_ENDPOINT}"
     end_time = int(time.time())
     interval_seconds = 1800 if interval == "30min" else 3600
@@ -43,7 +43,7 @@ def fetch_kline_data(symbol, size=100, interval="30min"):
     return None
 
 def fetch_volume_data(symbol):
-    """دریافت حجم معاملات 24 ساعته از KuCoin"""
+    """Fetch 24h trading volume from KuCoin"""
     url = f"{KUCOIN_BASE_URL}{KUCOIN_STATS_ENDPOINT}"
     params = {"symbol": symbol}
     try:
@@ -58,7 +58,7 @@ def fetch_volume_data(symbol):
         return 0
 
 def check_trend_consistency(trend_series):
-    """بررسی یکنواختی روند در پنجره زمانی"""
+    """Check trend consistency in the time window"""
     if len(trend_series) == 0:
         return 'neutral'
     if all(trend == 'up' for trend in trend_series):
@@ -68,7 +68,7 @@ def check_trend_consistency(trend_series):
     return 'neutral'
 
 def prepare_dataframe(df, timeframe=PRIMARY_TIMEFRAME):
-    """اضافه کردن اندیکاتورهای تکنیکال و قواعد اکشن پرایس"""
+    """Add technical indicators and price action rules"""
     if df is None or len(df) < SCALPING_SETTINGS['trend_confirmation_window']:
         return None
     try:
@@ -134,10 +134,21 @@ def main():
                 print(f"Skipping {crypto} due to low 24h volume: {volume_24h}")
                 continue
 
-            if crypto in active_signals and (datetime.now(tehran_tz) - datetime.strptime(
-                    active_signals[crypto]['created_at'], "%Y-%m-%d %H:%M:%S")).total_seconds() / 60 < SCALPING_SETTINGS['signal_cooldown_minutes']:
-                print(f"Skipping {crypto} due to active signal cooldown")
-                continue
+            if crypto in active_signals:
+                try:
+                    created_at = datetime.fromisoformat(active_signals[crypto]['created_at'])
+                    time_diff = (datetime.now(tehran_tz) - created_at).total_seconds() / 60
+                    if time_diff < SCALPING_SETTINGS['signal_cooldown_minutes']:
+                        print(f"Skipping {crypto} due to active signal cooldown")
+                        continue
+                except ValueError:
+                    # Fallback for old format
+                    created_at = datetime.strptime(active_signals[crypto]['created_at'], "%Y-%m-%d %H:%M:%S")
+                    created_at = tehran_tz.localize(created_at)
+                    time_diff = (datetime.now(tehran_tz) - created_at).total_seconds() / 60
+                    if time_diff < SCALPING_SETTINGS['signal_cooldown_minutes']:
+                        print(f"Skipping {crypto} due to active signal cooldown")
+                        continue
 
             df_primary = fetch_kline_data(trading_symbol, size=KLINE_SIZE, interval=PRIMARY_TIMEFRAME)
             if df_primary is None:
@@ -156,14 +167,14 @@ def main():
             signals = generate_signals(prepared_df_primary, prepared_df_higher, crypto)
             for signal in signals:
                 message = (
-                    f"🚨 سیگنال {signal['type']} برای {signal['symbol']}\n\n"
-                    f"💰 قیمت فعلی: {signal['current_price']}\n"
-                    f"🎯 قیمت هدف: {signal['target_price']}\n"
-                    f"🛑 حد ضرر: {signal['stop_loss']}\n"
-                    f"📊 امتیاز سیگنال: {signal['score']}\n"
-                    f"📊 نسبت ریسک به ریوارد: {signal['risk_reward_ratio']:.2f}\n\n"
-                    f"📊 دلایل سیگنال:\n{signal['reasons']}\n\n"
-                    f"⏱️ زمان: {signal['time']}"
+                    f"🚨 Signal {signal['type']} for {signal['symbol']}\n\n"
+                    f"💰 Current Price: {signal['current_price']}\n"
+                    f"🎯 Target Price: {signal['target_price']}\n"
+                    f"🛑 Stop Loss: {signal['stop_loss']}\n"
+                    f"📊 Signal Score: {signal['score']}\n"
+                    f"📊 Risk/Reward Ratio: {signal['risk_reward_ratio']:.2f}\n\n"
+                    f"📊 Reasons:\n{signal['reasons']}\n\n"
+                    f"⏱️ Time: {signal['time']}"
                 )
                 if send_telegram_message(message):
                     signals_sent += 1
@@ -178,7 +189,7 @@ def main():
 
         time.sleep(0.5)
 
-    send_telegram_message(f"✅ اسکن تکمیل شد. {signals_sent} سیگنال ارسال شد.")
+    send_telegram_message(f"✅ Scan completed. {signals_sent} signals sent.")
     print(f"Analysis complete. {signals_sent} signals sent.")
 
 if __name__ == "__main__":
@@ -186,4 +197,4 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print(f"Fatal error: {e}")
-        send_telegram_message(f"❌ خطای سیستمی: {e}")
+        send_telegram_message(f"❌ System error: {e}")
