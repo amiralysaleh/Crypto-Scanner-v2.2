@@ -46,7 +46,7 @@ SCALPING_SETTINGS = {
     'macd_signal': 9,
     'bb_period': 20,
     'bb_std': 2.0,
-    'min_volume_threshold': 400000,  # کاهش آستانه برای نقدینگی
+    'min_volume_threshold': 200000,  # کاهش آستانه برای نقدینگی
     'volume_change_threshold': 1.3,  # کاهش برای حساسیت بیشتر
     'profit_target_multiplier': 1.8,  # ضریب هدف سود بر اساس ATR
     'stop_loss_multiplier': 1.2,     # ضریب حد ضرر بر اساس ATR
