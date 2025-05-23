@@ -117,7 +117,7 @@ def check_signal_status(signal, df):
         return False, None, None
 
 def update_signal_status():
-    """به‌روزرسانی وضعیت سیگنال‌ها با بررسی کندل‌ها از زمان created_at"""
+    """به‌روزرسانی وضعیت سیگنال‌ها با بررسی فقط سیگنال‌های active"""
     signals = load_signals()
     if not signals:
         print("No signals to update")
@@ -125,10 +125,9 @@ def update_signal_status():
 
     updated = False
     tehran_tz = pytz.timezone('Asia/Tehran')
-    for signal in signals:
-        if signal['status'] != 'active':
-            continue
+    active_signals = [s for s in signals if s['status'] == 'active']
 
+    for signal in active_signals:
         created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=tehran_tz)
         df = fetch_kline_data(signal['symbol'], created_at, size=1000)
         if df is None:
@@ -146,7 +145,7 @@ def update_signal_status():
         save_signals(signals)
         print("Signals updated successfully")
     else:
-        print("No signals were updated")
+        print("No active signals were updated")
 
 def calculate_profit_loss(signal, df):
     """محاسبه درصد سود/زیان با استفاده از داده‌های کندل"""
