@@ -3,60 +3,48 @@ import pandas as pd
 import numpy as np
 import os
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz
 import ta
 import traceback
 from config import *
 from signal_generator import generate_signals
 from telegram_sender import send_telegram_message
-from signal_tracker import save_signal, load_signals
+from signal_tracker import save_signal
 
 def fetch_kline_data(symbol, size=100, interval="30min"):
-    """دریافت داده‌های کندل از KuCoin با تلاش مجدد"""
+    """دریافت داده‌های کندل از KuCoin"""
     url = f"{KUCOIN_BASE_URL}{KUCOIN_KLINE_ENDPOINT}"
     end_time = int(time.time())
     interval_seconds = 1800 if interval == "30min" else 3600
     start_time = end_time - (size * interval_seconds)
     
-    params = {"symbol": symbol, "type": interval, "startAt": start_time, "endAt": end_time}
-    for attempt in range(3):
-        try:
-            response = requests.get(url, params=params, timeout=10)
-            response.raise_for_status()
-            data = response.json()
-            if not data.get('data'):
-                print(f"Error fetching data for {symbol} on {interval}: {data}")
-                return None
-            df = pd.DataFrame(data['data'], columns=[
-                "timestamp", "open", "close", "high", "low", "volume", "turnover"
-            ])
-            df = df[["timestamp", "open", "high", "low", "close", "volume"]]
-            df = df.astype(float)
-            df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s")
-            df = df.iloc[::-1].reset_index(drop=True)
-            print(f"Received {len(df)} candles for {symbol} on {interval}")
-            return df
-        except Exception as e:
-            print(f"Attempt {attempt + 1} failed for {symbol} on {interval}: {e}")
-            time.sleep(2 ** attempt)
-    print(f"Failed to fetch data for {symbol} after 3 attempts")
-    return None
-
-def fetch_volume_data(symbol):
-    """دریافت حجم معاملات 24 ساعته از KuCoin"""
-    url = f"{KUCOIN_BASE_URL}{KUCOIN_STATS_ENDPOINT}"
-    params = {"symbol": symbol}
+    params = {
+        "symbol": symbol,
+        "type": interval,
+        "startAt": start_time,
+        "endAt": end_time
+    }
     try:
         response = requests.get(url, params=params, timeout=10)
-        response.raise_for_status()
         data = response.json()
-        volume = float(data.get('data', {}).get('volValue', 0))
-        print(f"24h volume for {symbol}: {volume} USDT")
-        return volume
+        if not data.get('data'):
+            print(f"Error fetching data for {symbol} on {interval}: {data}")
+            return None
+
+        df = pd.DataFrame(data['data'], columns=[
+            "timestamp", "open", "close", "high", "low", "volume", "turnover"
+        ])
+        df = df[["timestamp", "open", "high", "low", "close", "volume"]]
+        df = df.astype(float)
+        df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s")
+        df = df.iloc[::-1].reset_index(drop=True)
+        print(f"Received {len(df)} candles for {symbol} on {interval}")
+        return df
     except Exception as e:
-        print(f"Error fetching volume for {symbol}: {e}")
-        return 0
+        print(f"Error fetching data for {symbol} on {interval}: {e}")
+        print(traceback.format_exc())
+        return None
 
 def check_trend_consistency(trend_series):
     """بررسی یکنواختی روند در پنجره زمانی"""
@@ -72,7 +60,9 @@ def prepare_dataframe(df, timeframe=PRIMARY_TIMEFRAME):
     """اضافه کردن اندیکاتورهای تکنیکال و قواعد اکشن پرایس"""
     if df is None or len(df) < SCALPING_SETTINGS['trend_confirmation_window']:
         return None
+
     try:
+        # اندیکاتورهای تکنیکال
         df['rsi'] = ta.momentum.RSIIndicator(df['close'], window=SCALPING_SETTINGS['rsi_period']).rsi()
         df['ema_short'] = ta.trend.ema_indicator(df['close'], window=SCALPING_SETTINGS['ema_short'])
         df['ema_medium'] = ta.trend.ema_indicator(df['close'], window=SCALPING_SETTINGS['ema_medium'])
@@ -93,35 +83,38 @@ def prepare_dataframe(df, timeframe=PRIMARY_TIMEFRAME):
         df['bb_middle'] = bollinger.bollinger_mavg()
         df['bb_lower'] = bollinger.bollinger_lband()
 
-        df['atr'] = ta.volatility.AverageTrueRange(
-            high=df['high'], low=df['low'], close=df['close'], window=14
-        ).average_true_range()
-
+        # اکشن پرایس و حجم
         df['volume_change'] = df['volume'].pct_change()
         df['price_change'] = df['close'].pct_change()
         df['resistance'] = df['high'].rolling(window=10).max()
         df['support'] = df['low'].rolling(window=10).min()
-        df['trend'] = np.where(df['ema_short'] > df['ema_long'], 'up', 'down')
 
-        window = SCALPING_SETTINGS['trend_confirmation_window']
-        trend_confirmed = []
-        for i in range(len(df)):
-            if i < window - 1:
-                trend_confirmed.append('neutral')
-            else:
-                trend_slice = df['trend'].iloc[i - window + 1:i + 1]
-                trend_confirmed.append(check_trend_consistency(trend_slice))
-        df['trend_confirmed'] = trend_confirmed
+        # شناسایی روند در تایم فریم
+        df['trend'] = np.where(df['ema_short'] > df['ema_long'], 'up', 'down')
+        
+        # محاسبه روند تأیید شده
+        if timeframe == PRIMARY_TIMEFRAME:
+            window = SCALPING_SETTINGS['trend_confirmation_window']
+            trend_confirmed = []
+            for i in range(len(df)):
+                if i < window - 1:
+                    trend_confirmed.append('neutral')
+                else:
+                    trend_slice = df['trend'].iloc[i - window + 1:i + 1]
+                    trend_confirmed.append(check_trend_consistency(trend_slice))
+            df['trend_confirmed'] = trend_confirmed
+        else:
+            df['trend_confirmed'] = df['trend']
+
         return df
     except Exception as e:
         print(f"Error preparing DataFrame for {timeframe}: {e}")
+        print(traceback.format_exc())
         return None
 
 def main():
     print("🚀 Starting cryptocurrency analysis...")
     signals_sent = 0
-    tehran_tz = pytz.timezone('Asia/Tehran')
-    active_signals = {s['symbol']: s for s in load_signals() if s['status'] == 'active'}
 
     for crypto in CRYPTOCURRENCIES:
         print(f"Analyzing {crypto}...")
@@ -130,32 +123,28 @@ def main():
             if trading_symbol != crypto:
                 print(f"Using {trading_symbol} instead of {crypto}")
 
-            # بررسی نقدینگی
-            volume_24h = fetch_volume_data(trading_symbol)
-            if volume_24h < SCALPING_SETTINGS['min_volume_threshold']:
-                print(f"Skipping {crypto} due to low 24h volume: {volume_24h}")
-                continue
-
-            # بررسی خنک‌سازی سیگنال
-            if crypto in active_signals and (datetime.now(tehran_tz) - datetime.strptime(
-                    active_signals[crypto]['created_at'], "%Y-%m-%d %H:%M:%S")).total_seconds() / 60 < SCALPING_SETTINGS['signal_cooldown_minutes']:
-                print(f"Skipping {crypto} due to active signal cooldown")
-                continue
-
+            # دریافت داده‌های تایم فریم اصلی (30 دقیقه)
             df_primary = fetch_kline_data(trading_symbol, size=KLINE_SIZE, interval=PRIMARY_TIMEFRAME)
             if df_primary is None:
                 continue
 
+            # دریافت داده‌های تایم فریم بالاتر (1 ساعت)
             df_higher = fetch_kline_data(trading_symbol, size=KLINE_SIZE // 2, interval=HIGHER_TIMEFRAME)
             if df_higher is None:
                 continue
 
+            # آماده‌سازی دیتافریم‌ها
             prepared_df_primary = prepare_dataframe(df_primary, PRIMARY_TIMEFRAME)
             prepared_df_higher = prepare_dataframe(df_higher, HIGHER_TIMEFRAME)
             if prepared_df_primary is None or prepared_df_higher is None:
                 continue
 
             last_row = prepared_df_primary.iloc[-1]
+            print(f"Last RSI: {last_row['rsi']:.2f}, EMA Short: {last_row['ema_short']:.2f}, "
+                  f"MACD: {last_row['macd']:.6f}, Trend: {last_row['trend_confirmed']}, "
+                  f"Higher TF Trend: {prepared_df_higher.iloc[-1]['trend_confirmed']}")
+
+            # تولید سیگنال با تأیید از تایم فریم بالاتر
             signals = generate_signals(prepared_df_primary, prepared_df_higher, crypto)
             for signal in signals:
                 message = (
@@ -163,8 +152,7 @@ def main():
                     f"💰 قیمت فعلی: {signal['current_price']}\n"
                     f"🎯 قیمت هدف: {signal['target_price']}\n"
                     f"🛑 حد ضرر: {signal['stop_loss']}\n"
-                    f"📊 امتیاز سیگنال: {signal['score']}\n"
-                    f"📊 نسبت ریسک به ریوارد: {signal['risk_reward_ratio']:.2f}\n\n"
+                    f"📊 امتیاز سیگنال: {signal['score']}\n\n"
                     f"📊 دلایل سیگنال:\n{signal['reasons']}\n\n"
                     f"⏱️ زمان: {signal['time']}"
                 )
@@ -179,7 +167,7 @@ def main():
             print(f"Error during analysis of {crypto}: {e}")
             print(traceback.format_exc())
 
-        time.sleep(0.5)
+        time.sleep(1)
 
     send_telegram_message(f"✅ اسکن تکمیل شد. {signals_sent} سیگنال ارسال شد.")
     print(f"Analysis complete. {signals_sent} signals sent.")
