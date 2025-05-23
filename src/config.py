@@ -50,7 +50,7 @@ SCALPING_SETTINGS = {
     'volume_change_threshold': 1.5,
     'profit_target_multiplier': 2.0,  # ضریب هدف سود بر اساس ATR
     'stop_loss_multiplier': 1.5,     # ضریب حد ضرر بر اساس ATR
-    'min_score_threshold': 75,       # حداقل امتیاز برای سیگنال
+    'min_score_threshold': 50,       # حداقل امتیاز برای سیگنال
     'min_risk_reward_ratio': 1.5,    # حداقل نسبت ریسک به ریوارد
     'signal_cooldown_minutes': 15,   # خنک‌سازی برای سیگنال‌های متوالی
     'max_signals_per_symbol': 1,     # حداکثر سیگنال فعال برای هر ارز
