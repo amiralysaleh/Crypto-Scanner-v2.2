@@ -72,10 +72,12 @@
     "time": "2025-05-23T16:07:11.244592+03:30",
     "reasons": "\u2705 RSI in oversold zone (29.05) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0014)\n\u2705 Strong bullish candle (+0.35%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 59,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-23T16:07:11.244592+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.32000000"
+    "entry_price": "0.32000000",
+    "closed_price": "0.31389",
+    "closed_at": "2025-05-24T02:00:00+03:30"
   },
   {
     "symbol": "NEO-USDT",
@@ -118,10 +120,12 @@
     "time": "2025-05-24T00:45:43.903565+03:30",
     "reasons": "\u2705 RSI in oversold zone (27.62) and improving\n\u2705 Price near/below lower Bollinger Band (1.1693)\n\u2705 Price at support (660.0350)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 59,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-24T00:45:43.903565+03:30",
     "risk_reward_ratio": 1.4999999999999847,
-    "entry_price": "662.81900000"
+    "entry_price": "662.81900000",
+    "closed_price": "658.827",
+    "closed_at": "2025-05-24T02:30:00+03:30"
   },
   {
     "symbol": "API3-USDT",
@@ -132,9 +136,11 @@
     "time": "2025-05-24T00:46:37.449438+03:30",
     "reasons": "\u2705 RSI in oversold zone (26.09) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0017)\n\u2705 Price at support (0.8260)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 59,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-24T00:46:37.449438+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.83080000"
+    "entry_price": "0.83080000",
+    "closed_price": "0.811",
+    "closed_at": "2025-05-24T02:30:00+03:30"
   }
 ]
