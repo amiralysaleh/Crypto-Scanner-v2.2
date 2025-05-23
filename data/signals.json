@@ -186,10 +186,12 @@
     "time": "2025-05-23T15:38:58.519324+03:30",
     "reasons": "\u2705 RSI in oversold zone (29.20) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0006)\n\u2705 Price at support (0.0959)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 59,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-05-23T15:38:58.519324+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.09680000"
+    "entry_price": "0.09680000",
+    "closed_price": "0.09836",
+    "closed_at": "2025-05-23T17:34:18.417582+03:30"
   },
   {
     "symbol": "BNB-USDT",
@@ -200,10 +202,12 @@
     "time": "2025-05-23T16:06:37.469196+03:30",
     "reasons": "\u2705 RSI in oversold zone (24.10) and improving\n\u2705 Price near/below lower Bollinger Band (-3.4174)\n\u2705 Price at support (660.9340)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 59,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-05-23T16:06:37.469196+03:30",
     "risk_reward_ratio": 1.4999999999999873,
-    "entry_price": "665.88800000"
+    "entry_price": "665.88800000",
+    "closed_price": "672.945",
+    "closed_at": "2025-05-23T17:34:18.653470+03:30"
   },
   {
     "symbol": "TRX-USDT",
