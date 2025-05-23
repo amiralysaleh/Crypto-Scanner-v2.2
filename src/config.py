@@ -50,7 +50,7 @@ SCALPING_SETTINGS = {
     'volume_change_threshold': 1.3,  # کاهش برای حساسیت بیشتر
     'profit_target_multiplier': 1.8,  # ضریب هدف سود بر اساس ATR
     'stop_loss_multiplier': 1.2,     # ضریب حد ضرر بر اساس ATR
-    'min_score_threshold': 50,       # کاهش برای تولید سیگنال‌های بیشتر
+    'min_score_threshold': 55,       # کاهش برای تولید سیگنال‌های بیشتر
     'min_risk_reward_ratio': 1.2,    # کاهش برای عملی‌تر بودن
     'signal_cooldown_minutes': 10,   # کاهش برای انعطاف بیشتر
     'max_signals_per_symbol': 1,
