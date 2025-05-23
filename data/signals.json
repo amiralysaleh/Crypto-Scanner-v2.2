@@ -170,9 +170,11 @@
     "time": "2025-05-23T14:46:41.524080+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 7.4759\n\u2705 Price near/below lower Bollinger Band (615.8156)\n\u2705 Price at support (110392.0000)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 54,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-23T14:46:41.524080+03:30",
     "risk_reward_ratio": 1.500000000000018,
-    "entry_price": "111072.00000000"
+    "entry_price": "111072.00000000",
+    "closed_price": "108978.0",
+    "closed_at": "2025-05-23T15:29:25.250457+03:30"
   }
 ]
