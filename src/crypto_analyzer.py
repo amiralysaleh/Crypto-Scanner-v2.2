@@ -116,6 +116,12 @@ def prepare_dataframe(df, timeframe=PRIMARY_TIMEFRAME):
         print(f"Error preparing DataFrame for {timeframe}: {e}")
         return None
 
+def generate_tradingview_link(symbol):
+    """Generate TradingView chart link for the given symbol"""
+    # Convert symbol (e.g., BTC-USDT) to TradingView format (e.g., KUCOIN:BTCUSDT)
+    tradingview_symbol = symbol.replace('-', '')
+    return f"https://www.tradingview.com/chart/?symbol=KUCOIN:{tradingview_symbol}"
+
 def main():
     print("🚀 Starting cryptocurrency analysis...")
     signals_sent = 0
@@ -166,6 +172,7 @@ def main():
             last_row = prepared_df_primary.iloc[-1]
             signals = generate_signals(prepared_df_primary, prepared_df_higher, crypto)
             for signal in signals:
+                tradingview_link = generate_tradingview_link(signal['symbol'])
                 message = (
                     f"🚨 Signal {signal['type']} for {signal['symbol']}\n\n"
                     f"💰 Current Price: {signal['current_price']}\n"
@@ -174,6 +181,7 @@ def main():
                     f"📊 Signal Score: {signal['score']}\n"
                     f"📊 Risk/Reward Ratio: {signal['risk_reward_ratio']:.2f}\n\n"
                     f"📊 Reasons:\n{signal['reasons']}\n\n"
+                    f"📈 View Chart: {tradingview_link}\n"
                     f"⏱️ Time: {signal['time']}"
                 )
                 if send_telegram_message(message):
