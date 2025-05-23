@@ -2,13 +2,13 @@ import json
 import os
 import requests
 import argparse
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from filelock import FileLock
-from config import SIGNALS_FILE, KUCOIN_BASE_URL, KUCOIN_TICKER_ENDPOINT, SCALPING_SETTINGS
+from config import SIGNALS_FILE, KUCOIN_BASE_URL, KUCOIN_TICKER_ENDPOINT
 from telegram_sender import send_telegram_message
 
 def load_signals():
@@ -18,11 +18,20 @@ def load_signals():
             with open(SIGNALS_FILE, 'r') as f:
                 content = f.read()
                 signals = json.loads(content) if content.strip() else []
+                print(f"Loaded {len(signals)} signals from {SIGNALS_FILE}")
                 tehran_tz = pytz.timezone('Asia/Tehran')
                 for signal in signals:
                     if 'status' not in signal or signal['status'] not in ['active', 'target_reached', 'stop_loss']:
+                        print(f"Fixing invalid status for {signal.get('symbol', 'unknown')}")
                         signal['status'] = 'active'
                     if 'created_at' not in signal:
+                        signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
+                    # اصلاح زمان‌ها برای افزودن منطقه زمانی
+                    try:
+                        created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S")
+                        if created_at.tzinfo is None:
+                            signal['created_at'] = tehran_tz.localize(created_at).strftime("%Y-%m-%d %H:%M:%S")
+                    except ValueError:
                         signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
                     if 'closed_at' in signal and signal['closed_at']:
                         try:
@@ -32,6 +41,7 @@ def load_signals():
                         except ValueError:
                             signal['closed_at'] = None
                 return signals
+        print(f"No signals found at {SIGNALS_FILE}")
         return []
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from {SIGNALS_FILE}: {e}")
@@ -54,20 +64,16 @@ def save_signals(signals):
         send_telegram_message(f"❌ خطا در ذخیره سیگنال‌ها: {e}")
 
 def save_signal(signal):
-    """ذخیره یک سیگنال جدید با بررسی محدودیت‌ها"""
+    """ذخیره یک سیگنال جدید"""
     tehran_tz = pytz.timezone('Asia/Tehran')
     if 'entry_price' not in signal:
-        signal['entry_price'] = signal['current_price']
+        signal['entry_price'] = signal.get('current_price')
     if 'status' not in signal:
         signal['status'] = 'active'
     if 'created_at' not in signal:
         signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
     
     signals = load_signals()
-    active_count = sum(1 for s in signals if s['symbol'] == signal['symbol'] and s['status'] == 'active')
-    if active_count >= SCALPING_SETTINGS['max_signals_per_symbol']:
-        print(f"Skipping save for {signal['symbol']}: Max active signals reached")
-        return
     signals.append(signal)
     save_signals(signals)
     print(f"Signal saved: {signal['symbol']} {signal['type']}")
@@ -81,25 +87,27 @@ def get_current_price(symbol):
         response.raise_for_status()
         data = response.json()
         price = data.get('data', {}).get('price')
-        return float(price) if price else None
+        if price:
+            print(f"Price for {symbol}: {price}")
+            return float(price)
+        print(f"No price data for {symbol}: {data}")
+        return None
     except Exception as e:
         print(f"Error fetching price for {symbol}: {e}")
         return None
 
 def calculate_profit_loss(signal, current_price):
-    """محاسبه درصد سود/زیان با در نظر گرفتن کارمزد و اسپرد"""
+    """محاسبه درصد سود/زیان"""
     try:
         entry_price = float(signal.get('entry_price', signal['current_price']))
         if signal['status'] in ['target_reached', 'stop_loss']:
             close_price = float(signal.get('closed_price', current_price))
         else:
             close_price = current_price if current_price else entry_price
-        fee = (entry_price + close_price) * (SCALPING_SETTINGS['fee_percent'] / 100)
-        spread = entry_price * 0.001  # فرض اسپرد 0.1%
         if signal['type'] == 'خرید':
-            return (((close_price - entry_price) - fee - spread) / entry_price) * 100
+            return ((close_price - entry_price) / entry_price) * 100
         else:  # فروش
-            return (((entry_price - close_price) - fee - spread) / entry_price) * 100
+            return ((entry_price - close_price) / entry_price) * 100
     except (ValueError, TypeError) as e:
         print(f"Error calculating profit/loss for {signal['symbol']}: {e}")
         return None
@@ -111,10 +119,17 @@ def calculate_duration(created_at, closed_at):
         created = datetime.strptime(created_at, "%Y-%m-%d %H:%M:%S")
         if created.tzinfo is None:
             created = tehran_tz.localize(created)
-        closed = datetime.strptime(closed_at, "%Y-%m-%d %H:%M:%S") if closed_at else datetime.now(tehran_tz)
-        if closed.tzinfo is None:
-            closed = tehran_tz.localize(closed)
-        return (closed - created).total_seconds() / 3600
+        
+        if closed_at:
+            closed = datetime.strptime(closed_at, "%Y-%m-%d %H:%M:%S")
+            if closed.tzinfo is None:
+                closed = tehran_tz.localize(closed)
+        else:
+            closed = datetime.now(tehran_tz)
+        
+        duration_hours = (closed - created).total_seconds() / 3600
+        print(f"Duration calculated: {duration_hours:.2f} hours for created_at={created_at}, closed_at={closed_at}")
+        return duration_hours
     except (ValueError, TypeError) as e:
         print(f"Error calculating duration: {e}")
         return None
@@ -130,14 +145,21 @@ def update_signal_status():
     tehran_tz = pytz.timezone('Asia/Tehran')
     for signal in signals:
         if signal['status'] != 'active':
+            print(f"Skipping {signal['symbol']}: Already {signal['status']}")
             continue
 
         current_price = get_current_price(signal['symbol'])
         if current_price is None:
+            print(f"Skipping update for {signal['symbol']} due to missing price")
             continue
 
-        target_price = float(signal['target_price'])
-        stop_loss = float(signal['stop_loss'])
+        try:
+            target_price = float(signal['target_price'])
+            stop_loss = float(signal['stop_loss'])
+        except (ValueError, TypeError) as e:
+            print(f"Invalid target_price or stop_loss for {signal['symbol']}: {e}")
+            continue
+
         now_str = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
 
         if signal['type'] == 'خرید':
@@ -146,25 +168,32 @@ def update_signal_status():
                 signal['closed_price'] = str(current_price)
                 signal['closed_at'] = now_str
                 updated = True
+                print(f"Updated {signal['symbol']}: Target reached at {current_price}")
             elif current_price <= stop_loss:
                 signal['status'] = 'stop_loss'
                 signal['closed_price'] = str(current_price)
                 signal['closed_at'] = now_str
                 updated = True
+                print(f"Updated {signal['symbol']}: Stop loss hit at {current_price}")
         elif signal['type'] == 'فروش':
             if current_price <= target_price:
                 signal['status'] = 'target_reached'
                 signal['closed_price'] = str(current_price)
                 signal['closed_at'] = now_str
                 updated = True
+                print(f"Updated {signal['symbol']}: Target reached at {current_price}")
             elif current_price >= stop_loss:
                 signal['status'] = 'stop_loss'
                 signal['closed_price'] = str(current_price)
                 signal['closed_at'] = now_str
                 updated = True
+                print(f"Updated {signal['symbol']}: Stop loss hit at {current_price}")
 
     if updated:
         save_signals(signals)
+        print("Signals updated successfully")
+    else:
+        print("No signals were updated")
 
 def send_telegram_file(file_path):
     """ارسال فایل به تلگرام"""
@@ -183,9 +212,17 @@ def send_telegram_file(file_path):
     try:
         with open(file_path, 'rb') as f:
             files = {'document': (os.path.basename(file_path), f)}
-            data = {'chat_id': chat_id, 'caption': '📊 گزارش سیگنال‌ها'}
+            data = {
+                'chat_id': chat_id,
+                'caption': '📊 گزارش سیگنال‌ها'
+            }
             response = requests.post(url, files=files, data=data, timeout=15)
-            return response.status_code == 200
+            if response.status_code == 200:
+                print(f"File {file_path} sent to Telegram")
+                return True
+            else:
+                print(f"Error sending file to Telegram: {response.text}")
+                return False
     except Exception as e:
         print(f"Error sending file to Telegram: {e}")
         return False
@@ -198,6 +235,7 @@ def generate_excel_report():
     now_str = datetime.now(tehran_tz).strftime("%Y%m%d_%H%M%S")
     output_file = f"data/signals_report_{now_str}.xlsx"
 
+    # آماده‌سازی داده‌ها برای شیت‌ها
     all_signals_data = []
     active_signals_data = []
     for signal in signals:
@@ -217,8 +255,7 @@ def generate_excel_report():
             'Closed_At': signal.get('closed_at'),
             'Profit_Loss_%': round(profit_loss, 2) if profit_loss is not None else None,
             'Duration_Hours': round(duration, 2) if duration is not None else None,
-            'Reasons': signal['reasons'].replace('✅ ', '').replace('\n', '; '),
-            'Risk_Reward_Ratio': signal.get('risk_reward_ratio', 0)
+            'Reasons': signal['reasons'].replace('✅ ', '').replace('\n', '; ')
         }
         all_signals_data.append(signal_row)
         
@@ -230,10 +267,10 @@ def generate_excel_report():
                 'Current_Price': current_price,
                 'Price_Change_%': round(profit_loss, 2) if profit_loss is not None else None,
                 'Created_At': signal['created_at'],
-                'Reasons': signal['reasons'].replace('✅ ', '').replace('\n', '; '),
-                'Risk_Reward_Ratio': signal.get('risk_reward_ratio', 0)
+                'Reasons': signal['reasons'].replace('✅ ', '').replace('\n', '; ')
             })
 
+    # محاسبه آمارها
     total_signals = len(signals)
     active_signals = len([s for s in signals if s['status'] == 'active'])
     target_reached = len([s for s in signals if s['status'] == 'target_reached'])
@@ -252,26 +289,32 @@ def generate_excel_report():
         {'Metric': 'Average Duration (Hours)', 'Value': round(avg_duration, 2) if pd.notna(avg_duration) else None}
     ]
 
+    # ایجاد فایل Excel
     wb = Workbook()
+    
+    # شیت 1: تمام سیگنال‌ها
     ws1 = wb.active
     ws1.title = "All Signals"
     headers = ['Symbol', 'Type', 'Entry Price', 'Target Price', 'Stop Loss', 'Created At', 
-               'Status', 'Closed Price', 'Closed At', 'Profit/Loss (%)', 'Duration (Hours)', 'Reasons', 'Risk/Reward Ratio']
+               'Status', 'Closed Price', 'Closed At', 'Profit/Loss (%)', 'Duration (Hours)', 'Reasons']
     ws1.append(headers)
     for row in all_signals_data:
         ws1.append([row.get(h.replace(' ', '_'), '') for h in headers])
 
+    # شیت 2: سیگنال‌های فعال
     ws2 = wb.create_sheet("Active Signals")
-    headers_active = ['Symbol', 'Type', 'Entry Price', 'Current Price', 'Price Change (%)', 'Created At', 'Reasons', 'Risk/Reward Ratio']
+    headers_active = ['Symbol', 'Type', 'Entry Price', 'Current Price', 'Price Change (%)', 'Created At', 'Reasons']
     ws2.append(headers_active)
     for row in active_signals_data:
         ws2.append([row.get(h.replace(' ', '_'), '') for h in headers_active])
 
+    # شیت 3: آمارها
     ws3 = wb.create_sheet("Statistics")
     ws3.append(['Metric', 'Value'])
     for stat in stats_data:
         ws3.append([stat['Metric'], stat['Value']])
 
+    # اعمال استایل به شیت‌ها
     for ws in [ws1, ws2, ws3]:
         for cell in ws[1]:
             cell.font = Font(bold=True)
@@ -279,6 +322,7 @@ def generate_excel_report():
             cell.alignment = Alignment(horizontal='center', vertical='center')
             cell.border = Border(left=Side(style='thin'), right=Side(style='thin'), 
                                 top=Side(style='thin'), bottom=Side(style='thin'))
+
         for col in ws.columns:
             max_length = 0
             column = col[0].column_letter
@@ -290,8 +334,10 @@ def generate_excel_report():
                     pass
             adjusted_width = min(max_length + 2, 50)
             ws.column_dimensions[column].width = adjusted_width
+
         ws.freeze_panes = ws['A2']
 
+    # ذخیره فایل
     os.makedirs('data', exist_ok=True)
     try:
         wb.save(output_file)
@@ -301,6 +347,7 @@ def generate_excel_report():
         send_telegram_message(f"❌ خطا در تولید فایل Excel: {e}")
         return
 
+    # ارسال اعلان و فایل به تلگرام
     message = (
         f"📊 گزارش سیگنال‌ها تولید شد\n\n"
         f"🟢 سیگنال‌های فعال: {active_signals}\n"
