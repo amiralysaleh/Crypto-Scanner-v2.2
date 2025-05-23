@@ -47,17 +47,17 @@ def save_signals(signals):
         print(f"Error saving signals: {e}")
         send_telegram_message(f"❌ خطا در ذخیره سیگنال‌ها: {e}")
 
-def fetch_kline_data(symbol, size=100, interval=PRIMARY_TIMEFRAME):
-    """دریافت داده‌های کندل از KuCoin"""
+def fetch_kline_data(symbol, start_time, size=1000, interval=PRIMARY_TIMEFRAME):
+    """دریافت داده‌های کندل از KuCoin از زمان مشخص‌شده به بعد"""
     url = f"{KUCOIN_BASE_URL}{KUCOIN_KLINE_ENDPOINT}"
     end_time = int(datetime.now(pytz.UTC).timestamp())
     interval_seconds = 1800  # 30 دقیقه
-    start_time = end_time - (size * interval_seconds)
+    start_timestamp = int(start_time.timestamp())
     
     params = {
         "symbol": symbol,
         "type": interval,
-        "startAt": start_time,
+        "startAt": start_timestamp,
         "endAt": end_time
     }
     try:
@@ -80,17 +80,22 @@ def fetch_kline_data(symbol, size=100, interval=PRIMARY_TIMEFRAME):
         return None
 
 def check_signal_status(signal, df):
-    """بررسی وضعیت سیگنال با استفاده از داده‌های کندل"""
+    """بررسی وضعیت سیگنال با استفاده از داده‌های کندل از زمان created_at به بعد"""
     if df is None or df.empty:
         return False, None, None
 
     try:
         target_price = float(signal['target_price'])
         stop_loss = float(signal['stop_loss'])
-        entry_price = float(signal.get('entry_price', signal['current_price']))
-        tehran_tz = pytz.timezone('Asia/Tehran')
+        created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=pytz.timezone('Asia/Tehran'))
+        
+        # فیلتر کردن داده‌های کندل از زمان created_at به بعد
+        df_filtered = df[df['timestamp'] >= created_at]
 
-        for index, row in df.iterrows():
+        if df_filtered.empty:
+            return False, None, None
+
+        for index, row in df_filtered.iterrows():
             timestamp = row['timestamp']
             high = row['high']
             low = row['low']
@@ -112,7 +117,7 @@ def check_signal_status(signal, df):
         return False, None, None
 
 def update_signal_status():
-    """به‌روزرسانی وضعیت سیگنال‌ها با بررسی کندل‌ها"""
+    """به‌روزرسانی وضعیت سیگنال‌ها با بررسی کندل‌ها از زمان created_at"""
     signals = load_signals()
     if not signals:
         print("No signals to update")
@@ -124,7 +129,8 @@ def update_signal_status():
         if signal['status'] != 'active':
             continue
 
-        df = fetch_kline_data(signal['symbol'], size=1000)  # داده‌های بیشتری برای دقت بیشتر
+        created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=tehran_tz)
+        df = fetch_kline_data(signal['symbol'], created_at, size=1000)
         if df is None:
             continue
 
@@ -188,7 +194,8 @@ def generate_excel_report():
     all_signals_data = []
     active_signals_data = []
     for signal in signals:
-        df = fetch_kline_data(signal['symbol'], size=100)
+        created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=tehran_tz)
+        df = fetch_kline_data(signal['symbol'], created_at, size=100)
         if df is None:
             continue
 
