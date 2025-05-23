@@ -54,7 +54,7 @@ def save_signals(signals):
         send_telegram_message(f"❌ خطا در ذخیره سیگنال‌ها: {e}")
 
 def save_signal(signal):
-    """ذخیره یک سیگنال جدید"""
+    """ذخیره یک سیگنال جدید با بررسی محدودیت‌ها"""
     tehran_tz = pytz.timezone('Asia/Tehran')
     if 'entry_price' not in signal:
         signal['entry_price'] = signal['current_price']
@@ -64,13 +64,13 @@ def save_signal(signal):
         signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
     
     signals = load_signals()
-    # بررسی حداکثر سیگنال‌های فعال
     active_count = sum(1 for s in signals if s['symbol'] == signal['symbol'] and s['status'] == 'active')
     if active_count >= SCALPING_SETTINGS['max_signals_per_symbol']:
         print(f"Skipping save for {signal['symbol']}: Max active signals reached")
         return
     signals.append(signal)
     save_signals(signals)
+    print(f"Signal saved: {signal['symbol']} {signal['type']}")
 
 def get_current_price(symbol):
     """دریافت قیمت فعلی از KuCoin"""
@@ -86,19 +86,20 @@ def get_current_price(symbol):
         print(f"Error fetching price for {symbol}: {e}")
         return None
 
-def calculate_profit_loss(signal, current_price, fee_percent=0.1):
-    """محاسبه درصد سود/زیان با در نظر گرفتن کارمزد"""
+def calculate_profit_loss(signal, current_price):
+    """محاسبه درصد سود/زیان با در نظر گرفتن کارمزد و اسپرد"""
     try:
         entry_price = float(signal.get('entry_price', signal['current_price']))
         if signal['status'] in ['target_reached', 'stop_loss']:
             close_price = float(signal.get('closed_price', current_price))
         else:
             close_price = current_price if current_price else entry_price
-        fee = (entry_price + close_price) * (fee_percent / 100)
+        fee = (entry_price + close_price) * (SCALPING_SETTINGS['fee_percent'] / 100)
+        spread = entry_price * 0.001  # فرض اسپرد 0.1%
         if signal['type'] == 'خرید':
-            return (((close_price - entry_price) - fee) / entry_price) * 100
+            return (((close_price - entry_price) - fee - spread) / entry_price) * 100
         else:  # فروش
-            return (((entry_price - close_price) - fee) / entry_price) * 100
+            return (((entry_price - close_price) - fee - spread) / entry_price) * 100
     except (ValueError, TypeError) as e:
         print(f"Error calculating profit/loss for {signal['symbol']}: {e}")
         return None
@@ -165,6 +166,30 @@ def update_signal_status():
     if updated:
         save_signals(signals)
 
+def send_telegram_file(file_path):
+    """ارسال فایل به تلگرام"""
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+
+    if not bot_token or not chat_id:
+        print("Error: Telegram credentials not set")
+        return False
+
+    if not os.path.exists(file_path):
+        print(f"Error: File {file_path} does not exist")
+        return False
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
+    try:
+        with open(file_path, 'rb') as f:
+            files = {'document': (os.path.basename(file_path), f)}
+            data = {'chat_id': chat_id, 'caption': '📊 گزارش سیگنال‌ها'}
+            response = requests.post(url, files=files, data=data, timeout=15)
+            return response.status_code == 200
+    except Exception as e:
+        print(f"Error sending file to Telegram: {e}")
+        return False
+
 def generate_excel_report():
     """تولید گزارش Excel با شیت‌های مختلف"""
     update_signal_status()
@@ -181,11 +206,16 @@ def generate_excel_report():
         duration = calculate_duration(signal['created_at'], signal.get('closed_at'))
         
         signal_row = {
-            'Symbol': signal['symbol'], 'Type': signal['type'], 'Entry_Price': float(signal.get('entry_price', signal['current_price'])),
-            'Target_Price': float(signal['target_price']), 'Stop_Loss': float(signal['stop_loss']),
-            'Created_At': signal['created_at'], 'Status': signal['status'],
+            'Symbol': signal['symbol'],
+            'Type': signal['type'],
+            'Entry_Price': float(signal.get('entry_price', signal['current_price'])),
+            'Target_Price': float(signal['target_price']),
+            'Stop_Loss': float(signal['stop_loss']),
+            'Created_At': signal['created_at'],
+            'Status': signal['status'],
             'Closed_Price': float(signal['closed_price']) if signal.get('closed_price') else None,
-            'Closed_At': signal.get('closed_at'), 'Profit_Loss_%': round(profit_loss, 2) if profit_loss is not None else None,
+            'Closed_At': signal.get('closed_at'),
+            'Profit_Loss_%': round(profit_loss, 2) if profit_loss is not None else None,
             'Duration_Hours': round(duration, 2) if duration is not None else None,
             'Reasons': signal['reasons'].replace('✅ ', '').replace('\n', '; '),
             'Risk_Reward_Ratio': signal.get('risk_reward_ratio', 0)
@@ -194,7 +224,8 @@ def generate_excel_report():
         
         if signal['status'] == 'active' and current_price is not None:
             active_signals_data.append({
-                'Symbol': signal['symbol'], 'Type': signal['type'],
+                'Symbol': signal['symbol'],
+                'Type': signal['type'],
                 'Entry_Price': float(signal.get('entry_price', signal['current_price'])),
                 'Current_Price': current_price,
                 'Price_Change_%': round(profit_loss, 2) if profit_loss is not None else None,
@@ -262,7 +293,14 @@ def generate_excel_report():
         ws.freeze_panes = ws['A2']
 
     os.makedirs('data', exist_ok=True)
-    wb.save(output_file)
+    try:
+        wb.save(output_file)
+        print(f"Excel report generated: {output_file}")
+    except Exception as e:
+        print(f"Error saving Excel report: {e}")
+        send_telegram_message(f"❌ خطا در تولید فایل Excel: {e}")
+        return
+
     message = (
         f"📊 گزارش سیگنال‌ها تولید شد\n\n"
         f"🟢 سیگنال‌های فعال: {active_signals}\n"
@@ -272,13 +310,21 @@ def generate_excel_report():
         f"📅 زمان گزارش: {now_str}\n"
         f"📂 فایل: {output_file}"
     )
-    send_telegram_message(message)
-    send_telegram_file(output_file)
+    if send_telegram_message(message):
+        print("Telegram message sent successfully")
+    else:
+        print("Failed to send Telegram message")
+
+    if send_telegram_file(output_file):
+        print("Excel file sent to Telegram successfully")
+    else:
+        print("Failed to send Excel file to Telegram")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Track and report signal status')
     parser.add_argument('--report', action='store_true', help='Generate and send a status report')
     args = parser.parse_args()
+
     try:
         if args.report:
             generate_excel_report()
