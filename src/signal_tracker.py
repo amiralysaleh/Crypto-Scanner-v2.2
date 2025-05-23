@@ -25,9 +25,7 @@ def load_signals():
                         signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
                     if 'closed_at' not in signal:
                         signal['closed_at'] = None
-                print(f"Loaded {len(signals)} signals, active count: {sum(1 for s in signals if s['status'] == 'active')}")
                 return signals
-        print("No signals file found, returning empty list")
         return []
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from {SIGNALS_FILE}: {e}")
@@ -44,13 +42,13 @@ def save_signals(signals):
             os.makedirs(os.path.dirname(SIGNALS_FILE), exist_ok=True)
             with open(SIGNALS_FILE, 'w') as f:
                 json.dump(signals, f, indent=2)
-            print(f"Successfully saved {len(signals)} signals to {SIGNALS_FILE}")
+            print(f"Saved {len(signals)} signals to {SIGNALS_FILE}")
     except Exception as e:
         print(f"Error saving signals: {e}")
         send_telegram_message(f"❌ خطا در ذخیره سیگنال‌ها: {e}")
 
-def fetch_kline_data(symbol, start_time, size=2000, interval=PRIMARY_TIMEFRAME):
-    """دریافت داده‌های کندل از KuCoin از زمان مشخص‌شده به بعد با افزایش size"""
+def fetch_kline_data(symbol, start_time, size=1000, interval=PRIMARY_TIMEFRAME):
+    """دریافت داده‌های کندل از KuCoin از زمان مشخص‌شده به بعد"""
     url = f"{KUCOIN_BASE_URL}{KUCOIN_KLINE_ENDPOINT}"
     end_time = int(datetime.now(pytz.UTC).timestamp())
     interval_seconds = 1800  # 30 دقیقه
@@ -77,7 +75,7 @@ def fetch_kline_data(symbol, start_time, size=2000, interval=PRIMARY_TIMEFRAME):
         df = df.astype(float)
         df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s", utc=True).dt.tz_convert('Asia/Tehran')
         df = df.iloc[::-1].reset_index(drop=True)
-        print(f"Fetched {len(df)} candles for {symbol} from {start_time} to {datetime.fromtimestamp(end_time, tz=pytz.UTC).astimezone(tehran_tz)}")
+        print(f"Fetched {len(df)} candles for {symbol} from {start_time} to now")
         return df
     except requests.RequestException as e:
         print(f"HTTP Error fetching data for {symbol}: {e}")
@@ -147,7 +145,7 @@ def update_signal_status():
 
     for signal in active_signals:
         created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=tehran_tz)
-        df = fetch_kline_data(signal['symbol'], created_at, size=2000)  # افزایش size برای پوشش داده‌های بیشتر
+        df = fetch_kline_data(signal['symbol'], created_at, size=1000)
         if df is None:
             print(f"Skipping {signal['symbol']} due to data fetch failure")
             continue
@@ -156,19 +154,13 @@ def update_signal_status():
         if has_changed:
             signal['status'] = new_status
             signal['closed_at'] = close_time
-            # اطمینان از تطابق دقیق زمان برای استخراج closed_price
-            close_timestamp = pd.to_datetime(close_time, format="%Y-%m-%d %H:%M:%S").replace(tzinfo=tehran_tz)
-            matching_row = df[df['timestamp'] == close_timestamp]
-            if not matching_row.empty:
-                signal['closed_price'] = str(matching_row['close'].iloc[0])
-            else:
-                signal['closed_price'] = str(df.iloc[df.index[df['timestamp'] <= close_timestamp][-1]]['close'])
+            signal['closed_price'] = str(df[df['timestamp'] == pd.to_datetime(close_time, utc=True).tz_convert('Asia/Tehran')]['close'].iloc[0])
             updated = True
-            print(f"Updated {signal['symbol']} to {new_status} at {close_time} with price {signal['closed_price']}")
+            print(f"Updated {signal['symbol']} to {new_status} at {close_time}")
 
     if updated:
         save_signals(signals)
-        print("Signals updated successfully, check signals.json for changes")
+        print("Signals updated successfully")
     else:
         print("No active signals were updated")
 
