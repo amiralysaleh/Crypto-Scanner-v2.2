@@ -2,13 +2,13 @@ import json
 import os
 import requests
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from filelock import FileLock
-from config import SIGNALS_FILE, KUCOIN_BASE_URL, KUCOIN_TICKER_ENDPOINT
+from config import SIGNALS_FILE, KUCOIN_BASE_URL, KUCOIN_KLINE_ENDPOINT, KUCOIN_TICKER_ENDPOINT
 from telegram_sender import send_telegram_message
 
 def load_signals():
@@ -30,13 +30,11 @@ def load_signals():
                         signal['created_at'] = datetime.now(tehran_tz).isoformat()
                     else:
                         try:
-                            # Parse created_at and ensure it's timezone-aware
                             created_at = datetime.fromisoformat(signal['created_at'])
                             if created_at.tzinfo is None:
                                 created_at = tehran_tz.localize(created_at)
                                 signal['created_at'] = created_at.isoformat()
                         except ValueError:
-                            # Fallback for old format without timezone
                             created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S")
                             created_at = tehran_tz.localize(created_at)
                             signal['created_at'] = created_at.isoformat()
@@ -48,7 +46,6 @@ def load_signals():
                                 closed_at = tehran_tz.localize(closed_at)
                                 signal['closed_at'] = closed_at.isoformat()
                         except ValueError:
-                            # Fallback for old format without timezone
                             try:
                                 closed_at = datetime.strptime(signal['closed_at'], "%Y-%m-%d %H:%M:%S")
                                 closed_at = tehran_tz.localize(closed_at)
@@ -93,6 +90,35 @@ def save_signal(signal):
     save_signals(signals)
     print(f"Signal saved: {signal['symbol']} {signal['type']}")
 
+def fetch_kline_data(symbol, start_time, end_time, interval="30min"):
+    """Fetch kline data from KuCoin for a specific time range"""
+    url = f"{KUCOIN_BASE_URL}{KUCOIN_KLINE_ENDPOINT}"
+    params = {
+        "symbol": symbol,
+        "type": interval,
+        "startAt": int(start_time.timestamp()),
+        "endAt": int(end_time.timestamp())
+    }
+    try:
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        if not data.get('data'):
+            print(f"No kline data for {symbol}: {data}")
+            return None
+        df = pd.DataFrame(data['data'], columns=[
+            "timestamp", "open", "close", "high", "low", "volume", "turnover"
+        ])
+        df = df[["timestamp", "open", "high", "low", "close", "volume"]]
+        df = df.astype(float)
+        df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s").dt.tz_localize('UTC').dt.tz_convert('Asia/Tehran')
+        df = df.iloc[::-1].reset_index(drop=True)
+        print(f"Received {len(df)} candles for {symbol} from {start_time} to {end_time}")
+        return df
+    except Exception as e:
+        print(f"Error fetching kline data for {symbol}: {e}")
+        return None
+
 def get_current_price(symbol):
     """Fetch current price from KuCoin"""
     url = f"{KUCOIN_BASE_URL}{KUCOIN_TICKER_ENDPOINT}"
@@ -103,7 +129,7 @@ def get_current_price(symbol):
         data = response.json()
         price = data.get('data', {}).get('price')
         if price:
-            print(f"Price for {symbol}: {price}")
+            print(f"Current price for {symbol}: {price}")
             return float(price)
         print(f"No price data for {symbol}: {data}")
         return None
@@ -111,17 +137,14 @@ def get_current_price(symbol):
         print(f"Error fetching price for {symbol}: {e}")
         return None
 
-def calculate_profit_loss(signal, current_price):
+def calculate_profit_loss(signal, close_price):
     """Calculate profit/loss percentage"""
     try:
         entry_price = float(signal.get('entry_price', signal['current_price']))
-        if signal['status'] in ['target_reached', 'stop_loss']:
-            close_price = float(signal.get('closed_price', current_price))
-        else:
-            close_price = current_price if current_price else entry_price
+        close_price = float(close_price)
         if signal['type'] == 'BUY':
             return ((close_price - entry_price) / entry_price) * 100
-        else:  # فروش
+        else:  # SELL
             return ((entry_price - close_price) / entry_price) * 100
     except (ValueError, TypeError) as e:
         print(f"Error calculating profit/loss for {signal['symbol']}: {e}")
@@ -149,8 +172,38 @@ def calculate_duration(created_at, closed_at):
         print(f"Error calculating duration: {e}")
         return None
 
+def check_signal_hit(signal, df):
+    """Check if signal hit target or stop-loss based on kline data"""
+    try:
+        target_price = float(signal['target_price'])
+        stop_loss = float(signal['stop_loss'])
+        signal_type = signal['type']
+        created_at = datetime.fromisoformat(signal['created_at']).astimezone(pytz.timezone('Asia/Tehran'))
+
+        for _, row in df.iterrows():
+            candle_time = row['timestamp']
+            if candle_time <= created_at:
+                continue  # Skip candles before signal creation
+            high = row['high']
+            low = row['low']
+            
+            if signal_type == 'BUY':
+                if high >= target_price:
+                    return 'target_reached', str(row['close']), candle_time.isoformat()
+                if low <= stop_loss:
+                    return 'stop_loss', str(row['close']), candle_time.isoformat()
+            elif signal_type == 'SELL':
+                if low <= target_price:
+                    return 'target_reached', str(row['close']), candle_time.isoformat()
+                if high >= stop_loss:
+                    return 'stop_loss', str(row['close']), candle_time.isoformat()
+        return None, None, None
+    except Exception as e:
+        print(f"Error checking signal hit for {signal['symbol']}: {e}")
+        return None, None, None
+
 def update_signal_status():
-    """Update signal statuses"""
+    """Update signal statuses by checking historical kline data"""
     signals = load_signals()
     if not signals:
         print("No signals to update")
@@ -158,51 +211,36 @@ def update_signal_status():
 
     updated = False
     tehran_tz = pytz.timezone('Asia/Tehran')
+    now = datetime.now(tehran_tz)
+    
     for signal in signals:
         if signal['status'] != 'active':
             print(f"Skipping {signal['symbol']}: Already {signal['status']}")
             continue
 
-        current_price = get_current_price(signal['symbol'])
-        if current_price is None:
-            print(f"Skipping update for {signal['symbol']} due to missing price")
-            continue
-
         try:
-            target_price = float(signal['target_price'])
-            stop_loss = float(signal['stop_loss'])
-        except (ValueError, TypeError) as e:
-            print(f"Invalid target_price or stop_loss for {signal['symbol']}: {e}")
-            continue
+            created_at = datetime.fromisoformat(signal['created_at']).astimezone(tehran_tz)
+            # Fetch kline data from signal creation to now
+            df = fetch_kline_data(signal['symbol'], created_at, now, interval="30min")
+            if df is None:
+                print(f"Skipping update for {signal['symbol']} due to missing kline data")
+                continue
 
-        now_str = datetime.now(tehran_tz).isoformat()
-
-        if signal['type'] == 'BUY':
-            if current_price >= target_price:
-                signal['status'] = 'target_reached'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
+            status, closed_price, closed_at = check_signal_hit(signal, df)
+            if status:
+                signal['status'] = status
+                signal['closed_price'] = closed_price
+                signal['closed_at'] = closed_at
                 updated = True
-                print(f"Updated {signal['symbol']}: Target reached at {current_price}")
-            elif current_price <= stop_loss:
-                signal['status'] = 'stop_loss'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
-                updated = True
-                print(f"Updated {signal['symbol']}: Stop loss hit at {current_price}")
-        elif signal['type'] == 'SELL':
-            if current_price <= target_price:
-                signal['status'] = 'target_reached'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
-                updated = True
-                print(f"Updated {signal['symbol']}: Target reached at {current_price}")
-            elif current_price >= stop_loss:
-                signal['status'] = 'stop_loss'
-                signal['closed_price'] = str(current_price)
-                signal['closed_at'] = now_str
-                updated = True
-                print(f"Updated {signal['symbol']}: Stop loss hit at {current_price}")
+                print(f"Updated {signal['symbol']}: {status} at {closed_price} on {closed_at}")
+                send_telegram_message(
+                    f"📢 Signal Update for {signal['symbol']}\n"
+                    f"Status: {status.replace('_', ' ').title()}\n"
+                    f"Closed Price: {closed_price}\n"
+                    f"Time: {closed_at}"
+                )
+        except Exception as e:
+            print(f"Error updating {signal['symbol']}: {e}")
 
     if updated:
         save_signals(signals)
@@ -255,7 +293,8 @@ def generate_excel_report():
     active_signals_data = []
     for signal in signals:
         current_price = get_current_price(signal['symbol']) if signal['status'] == 'active' else None
-        profit_loss = calculate_profit_loss(signal, current_price)
+        close_price = float(signal['closed_price']) if signal.get('closed_price') else current_price
+        profit_loss = calculate_profit_loss(signal, close_price) if close_price is not None else None
         duration = calculate_duration(signal['created_at'], signal.get('closed_at'))
         
         signal_row = {
@@ -275,12 +314,13 @@ def generate_excel_report():
         all_signals_data.append(signal_row)
         
         if signal['status'] == 'active' and current_price is not None:
+            price_change = ((current_price - signal_row['Entry_Price']) / signal_row['Entry_Price']) * 100
             active_signals_data.append({
                 'Symbol': signal['symbol'],
                 'Type': signal['type'],
-                'Entry_Price': float(signal.get('entry_price', signal['current_price'])),
+                'Entry_Price': signal_row['Entry_Price'],
                 'Current_Price': current_price,
-                'Price_Change_%': round(profit_loss, 2) if profit_loss is not None else None,
+                'Price_Change_%': round(price_change, 2),
                 'Created_At': signal['created_at'],
                 'Reasons': signal['reasons'].replace('✅ ', '').replace('\n', '; ')
             })
