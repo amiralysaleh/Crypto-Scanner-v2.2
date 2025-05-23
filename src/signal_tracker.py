@@ -25,7 +25,9 @@ def load_signals():
                         signal['created_at'] = datetime.now(tehran_tz).strftime("%Y-%m-%d %H:%M:%S")
                     if 'closed_at' not in signal:
                         signal['closed_at'] = None
+                print(f"Loaded {len(signals)} signals, active count: {sum(1 for s in signals if s['status'] == 'active')}")
                 return signals
+        print("No signals file found, returning empty list")
         return []
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from {SIGNALS_FILE}: {e}")
@@ -42,16 +44,20 @@ def save_signals(signals):
             os.makedirs(os.path.dirname(SIGNALS_FILE), exist_ok=True)
             with open(SIGNALS_FILE, 'w') as f:
                 json.dump(signals, f, indent=2)
-            print(f"Saved {len(signals)} signals to {SIGNALS_FILE}")
+            print(f"Successfully saved {len(signals)} signals to {SIGNALS_FILE}")
+            # تأیید محتوای ذخیره‌شده
+            with open(SIGNALS_FILE, 'r') as f:
+                saved_data = json.load(f)
+                active_count = sum(1 for s in saved_data if s['status'] == 'active')
+                print(f"Verified: {len(saved_data)} signals saved, active count: {active_count}")
     except Exception as e:
         print(f"Error saving signals: {e}")
         send_telegram_message(f"❌ خطا در ذخیره سیگنال‌ها: {e}")
 
-def fetch_kline_data(symbol, start_time, size=1000, interval=PRIMARY_TIMEFRAME):
+def fetch_kline_data(symbol, start_time, size=5000, interval=PRIMARY_TIMEFRAME):
     """دریافت داده‌های کندل از KuCoin از زمان مشخص‌شده به بعد"""
     url = f"{KUCOIN_BASE_URL}{KUCOIN_KLINE_ENDPOINT}"
     end_time = int(datetime.now(pytz.UTC).timestamp())
-    interval_seconds = 1800  # 30 دقیقه
     start_timestamp = int(start_time.timestamp())
     
     params = {
@@ -75,7 +81,7 @@ def fetch_kline_data(symbol, start_time, size=1000, interval=PRIMARY_TIMEFRAME):
         df = df.astype(float)
         df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s", utc=True).dt.tz_convert('Asia/Tehran')
         df = df.iloc[::-1].reset_index(drop=True)
-        print(f"Fetched {len(df)} candles for {symbol} from {start_time} to now")
+        print(f"Fetched {len(df)} candles for {symbol} from {start_time} to {datetime.fromtimestamp(end_time, tz=pytz.UTC).astimezone(pytz.timezone('Asia/Tehran'))}")
         return df
     except requests.RequestException as e:
         print(f"HTTP Error fetching data for {symbol}: {e}")
@@ -106,27 +112,28 @@ def check_signal_status(signal, df):
             timestamp = row['timestamp']
             high = row['high']
             low = row['low']
+            close = row['close']
 
             if signal['type'] == 'خرید':
                 if high >= target_price:
-                    print(f"{signal['symbol']} reached target {target_price} at {timestamp}")
-                    return True, 'target_reached', timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"{signal['symbol']} reached target {target_price} at {timestamp}, close: {close}")
+                    return True, 'target_reached', timestamp.strftime("%Y-%m-%d %H:%M:%S"), close
                 elif low <= stop_loss:
-                    print(f"{signal['symbol']} hit stop loss {stop_loss} at {timestamp}")
-                    return True, 'stop_loss', timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"{signal['symbol']} hit stop loss {stop_loss} at {timestamp}, close: {close}")
+                    return True, 'stop_loss', timestamp.strftime("%Y-%m-%d %H:%M:%S"), close
             elif signal['type'] == 'فروش':
                 if low <= target_price:
-                    print(f"{signal['symbol']} reached target {target_price} at {timestamp}")
-                    return True, 'target_reached', timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"{signal['symbol']} reached target {target_price} at {timestamp}, close: {close}")
+                    return True, 'target_reached', timestamp.strftime("%Y-%m-%d %H:%M:%S"), close
                 elif high >= stop_loss:
-                    print(f"{signal['symbol']} hit stop loss {stop_loss} at {timestamp}")
-                    return True, 'stop_loss', timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"{signal['symbol']} hit stop loss {stop_loss} at {timestamp}, close: {close}")
+                    return True, 'stop_loss', timestamp.strftime("%Y-%m-%d %H:%M:%S"), close
 
         print(f"No status change for {signal['symbol']} up to current data")
-        return False, None, None
+        return False, None, None, None
     except Exception as e:
         print(f"Error checking signal status for {signal['symbol']}: {e}")
-        return False, None, None
+        return False, None, None, None
 
 def update_signal_status():
     """به‌روزرسانی وضعیت سیگنال‌ها با بررسی فقط سیگنال‌های active"""
@@ -144,23 +151,25 @@ def update_signal_status():
         return
 
     for signal in active_signals:
+        print(f"Checking signal: {signal['symbol']}, status: {signal['status']}")
         created_at = datetime.strptime(signal['created_at'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=tehran_tz)
-        df = fetch_kline_data(signal['symbol'], created_at, size=1000)
+        df = fetch_kline_data(signal['symbol'], created_at, size=5000)
         if df is None:
             print(f"Skipping {signal['symbol']} due to data fetch failure")
             continue
 
-        has_changed, new_status, close_time = check_signal_status(signal, df)
+        has_changed, new_status, close_time, close_price = check_signal_status(signal, df)
         if has_changed:
             signal['status'] = new_status
             signal['closed_at'] = close_time
-            signal['closed_price'] = str(df[df['timestamp'] == pd.to_datetime(close_time, utc=True).tz_convert('Asia/Tehran')]['close'].iloc[0])
+            signal['closed_price'] = str(close_price)
             updated = True
-            print(f"Updated {signal['symbol']} to {new_status} at {close_time}")
+            print(f"Updated {signal['symbol']} to {new_status} at {close_time} with closed_price: {close_price}")
 
     if updated:
+        print("Signals updated, saving changes...")
         save_signals(signals)
-        print("Signals updated successfully")
+        print("Signals saved successfully")
     else:
         print("No active signals were updated")
 
