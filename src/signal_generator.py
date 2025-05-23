@@ -79,7 +79,7 @@ def generate_signals(df_primary, df_higher, symbol):
                 current_time = datetime.now(pytz.timezone('Asia/Tehran')).isoformat()
                 signals.append({
                     'symbol': symbol,
-                    'type': 'خرید',
+                    'type': 'BUY',
                     'current_price': f"{current_price:.8f}",
                     'target_price': f"{target_price:.8f}",
                     'stop_loss': f"{stop_loss:.8f}",
@@ -135,7 +135,7 @@ def generate_signals(df_primary, df_higher, symbol):
                 current_time = datetime.now(pytz.timezone('Asia/Tehran')).isoformat()
                 signals.append({
                     'symbol': symbol,
-                    'type': 'فروش',
+                    'type': 'SELL',
                     'current_price': f"{current_price:.8f}",
                     'target_price': f"{target_price:.8f}",
                     'stop_loss': f"{stop_loss:.8f}",
