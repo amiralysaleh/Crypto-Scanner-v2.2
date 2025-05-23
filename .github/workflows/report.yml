@@ -2,7 +2,7 @@ name: Generate Signal Reports
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # هر 6 ساعت
+    - cron: '0 */1 * * *'  # هر ساعت
   workflow_dispatch:
 
 jobs:
@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # دریافت تاریخچه کامل برای جلوگیری از مشکلات git
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -36,6 +38,17 @@ jobs:
 
       - name: List files in data directory
         run: ls -l data/  # لاگ‌گیری برای تأیید تولید فایل
+
+      - name: Commit and push updated signals.json
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add data/signals.json
+          git commit -m "Update signals.json with new statuses" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true  # ادامه حتی در صورت خطا
 
       - name: Upload report artifact
         uses: actions/upload-artifact@v4
