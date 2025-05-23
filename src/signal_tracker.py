@@ -119,7 +119,7 @@ def calculate_profit_loss(signal, current_price):
             close_price = float(signal.get('closed_price', current_price))
         else:
             close_price = current_price if current_price else entry_price
-        if signal['type'] == 'خرید':
+        if signal['type'] == 'BUY':
             return ((close_price - entry_price) / entry_price) * 100
         else:  # فروش
             return ((entry_price - close_price) / entry_price) * 100
@@ -177,7 +177,7 @@ def update_signal_status():
 
         now_str = datetime.now(tehran_tz).isoformat()
 
-        if signal['type'] == 'خرید':
+        if signal['type'] == 'BUY':
             if current_price >= target_price:
                 signal['status'] = 'target_reached'
                 signal['closed_price'] = str(current_price)
@@ -190,7 +190,7 @@ def update_signal_status():
                 signal['closed_at'] = now_str
                 updated = True
                 print(f"Updated {signal['symbol']}: Stop loss hit at {current_price}")
-        elif signal['type'] == 'فروش':
+        elif signal['type'] == 'SELL':
             if current_price <= target_price:
                 signal['status'] = 'target_reached'
                 signal['closed_price'] = str(current_price)
