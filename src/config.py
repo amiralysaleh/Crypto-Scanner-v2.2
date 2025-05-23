@@ -1,4 +1,4 @@
-# لیست ارزهای دیجیتال برای بررسی - نمادهای سازگار با KuCoin# لیست ارزهای دیجیتال برای بررسی - نمادهای سازگار با KuCoin
+# لیست ارزهای دیجیتال برای بررسی - نمادهای سازگار با KuCoin
 CRYPTOCURRENCIES = [
     "BTC-USDT", "ETH-USDT", "BNB-USDT", "SOL-USDT", "XRP-USDT",
     "ADA-USDT", "DOGE-USDT", "SHIB-USDT", "DOT-USDT", 
@@ -36,8 +36,8 @@ KUCOIN_SUPPORTED_PAIRS = {
 # تنظیمات استراتژی اسکالپینگ با سیستم امتیازدهی
 SCALPING_SETTINGS = {
     'rsi_period': 14,
-    'rsi_overbought': 60,
-    'rsi_oversold': 40,
+    'rsi_overbought': 70,
+    'rsi_oversold': 30,
     'ema_short': 8,
     'ema_medium': 21,
     'ema_long': 50,
@@ -45,12 +45,17 @@ SCALPING_SETTINGS = {
     'macd_slow': 26,
     'macd_signal': 9,
     'bb_period': 20,
-    'bb_std': 2.5,
-    'volume_change_threshold': 1.5,
-    'profit_target_percent': 1.5,
-    'stop_loss_percent': 0.8,
-    'min_score_threshold': 60,
+    'bb_std': 2.0,
+    'min_volume_threshold': 400000,  # کاهش آستانه برای نقدینگی
+    'volume_change_threshold': 1.3,  # کاهش برای حساسیت بیشتر
+    'profit_target_multiplier': 1.8,  # ضریب هدف سود بر اساس ATR
+    'stop_loss_multiplier': 1.2,     # ضریب حد ضرر بر اساس ATR
+    'min_score_threshold': 65,       # کاهش برای تولید سیگنال‌های بیشتر
+    'min_risk_reward_ratio': 1.2,    # کاهش برای عملی‌تر بودن
+    'signal_cooldown_minutes': 10,   # کاهش برای انعطاف بیشتر
+    'max_signals_per_symbol': 1,
     'trend_confirmation_window': 10,
+    'fee_percent': 0.1,
 }
 
 # تنظیمات تایم فریم‌ها
@@ -63,3 +68,4 @@ SIGNALS_FILE = "data/signals.json"
 KUCOIN_BASE_URL = "https://api.kucoin.com"
 KUCOIN_KLINE_ENDPOINT = "/api/v1/market/candles"
 KUCOIN_TICKER_ENDPOINT = "/api/v1/market/orderbook/level1"
+KUCOIN_STATS_ENDPOINT = "/api/v1/market/stats"
