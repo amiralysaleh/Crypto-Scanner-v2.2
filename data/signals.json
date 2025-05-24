@@ -276,10 +276,12 @@
     "time": "2025-05-25T00:49:52.757414+03:30",
     "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0004\n\u2705 Price near/above upper Bollinger Band (-0.0127)\n\u2705 Price at resistance (2.3546)\n\u2705 Strong bearish candle (-0.32%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 64,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-05-25T00:49:52.757414+03:30",
     "risk_reward_ratio": 1.5000000000000229,
-    "entry_price": "2.34214000"
+    "entry_price": "2.34214000",
+    "closed_price": "2.32242",
+    "closed_at": "2025-05-25T02:30:00+03:30"
   },
   {
     "symbol": "SHIB-USDT",
