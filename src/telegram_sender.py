@@ -1,7 +1,7 @@
 import requests
 import os
 
-def send_telegram_message(message):
+def send_telegram_message(message, silent=False):
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
 
@@ -14,7 +14,8 @@ def send_telegram_message(message):
         'chat_id': chat_id,
         'text': message,
         'parse_mode': 'HTML',
-        'disable_web_page_preview': True
+        'disable_web_page_preview': True,
+        'disable_notification': silent  # اضافه کردن پارامتر برای ارسال سایلنت
     }
 
     try:
