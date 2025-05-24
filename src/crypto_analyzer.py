@@ -197,7 +197,7 @@ def main():
 
         time.sleep(0.5)
 
-    send_telegram_message(f"✅ Scan completed. {signals_sent} signals sent.")
+    send_telegram_message(f"✅ Scan completed. {signals_sent} signals sent.", silent=True)
     print(f"Analysis complete. {signals_sent} signals sent.")
 
 if __name__ == "__main__":
