@@ -2,9 +2,8 @@ name: Crypto Signal Generator
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # هر 2 ساعت
-    - cron: '0 */4 * * *'  # هر 4 ساعت برای گزارش وضعیت
-
+    - cron: '*/30 * * * *'  # هر 30 دقیقه
+    - cron: '0 */4 * * *'   # هر 4 ساعت برای گزارش وضعیت
   workflow_dispatch:  # برای اجرای دستی
 
 jobs:
@@ -23,7 +22,7 @@ jobs:
         run: pip install -r requirements.txt
         
       - name: Run crypto analyzer
-        if: github.event.schedule != '0 */4 * * *'  # فقط در زمان‌بندی 2 ساعته اجرا شود
+        if: github.event.schedule != '0 */4 * * *'  # فقط در زمان‌بندی 30 دقیقه اجرا شود
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
