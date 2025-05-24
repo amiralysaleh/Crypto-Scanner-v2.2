@@ -61,7 +61,7 @@ SCALPING_SETTINGS = {
     'stop_loss_multiplier': 1.2,     # ضریب حد ضرر بر اساس ATR
     'min_score_threshold': 55,       # کاهش برای تولید سیگنال‌های بیشتر
     'min_risk_reward_ratio': 1.2,    # کاهش برای عملی‌تر بودن
-    'signal_cooldown_minutes': 10,   # کاهش برای انعطاف بیشتر
+    'signal_cooldown_minutes': 60,   # کاهش برای انعطاف بیشتر
     'max_signals_per_symbol': 1,
     'trend_confirmation_window': 10,
     'fee_percent': 0.1,
