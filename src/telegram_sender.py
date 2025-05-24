@@ -19,7 +19,7 @@ def send_telegram_message(message, silent=False):
     }
 
     try:
-        response = requests.post(url, data=payload, timeout=10)
+        response = requests.post(url, json=payload, timeout=10)
         return response.status_code == 200
     except Exception as e:
         print(f"Error sending message to Telegram: {e}")
