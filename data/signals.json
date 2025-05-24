@@ -166,10 +166,12 @@
     "time": "2025-05-24T11:18:20.900122+03:30",
     "reasons": "\u2705 Short EMA crossed below medium EMA by 0.1921\n\u2705 Price near/above upper Bollinger Band (-18.9792)\n\u2705 Price at resistance (2563.1900)\n\u2705 Strong bearish candle (-0.44%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 64,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-24T11:18:20.900122+03:30",
     "risk_reward_ratio": 1.4999999999999887,
-    "entry_price": "2548.25000000"
+    "entry_price": "2548.25000000",
+    "closed_price": "2570.17",
+    "closed_at": "2025-05-24T14:00:00+03:30"
   },
   {
     "symbol": "XLM-USDT",
