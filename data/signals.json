@@ -196,10 +196,12 @@
     "time": "2025-05-24T19:56:39.723921+03:30",
     "reasons": "\u2705 Short EMA crossed below medium EMA by 0.4466\n\u2705 MACD crossed below signal line by -0.3060\n\u2705 Price near/above upper Bollinger Band (-18.7594)\n\u2705 Price at resistance (2571.5600)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 74,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-24T19:56:39.723921+03:30",
     "risk_reward_ratio": 1.4999999999999856,
-    "entry_price": "2550.15000000"
+    "entry_price": "2550.15000000",
+    "closed_price": "2561.01",
+    "closed_at": "2025-05-24T21:30:00+03:30"
   },
   {
     "symbol": "KCS-USDT",
