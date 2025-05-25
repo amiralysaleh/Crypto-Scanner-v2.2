@@ -296,10 +296,12 @@
     "time": "2025-05-25T12:18:36.273021+03:30",
     "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0000\n\u2705 MACD crossed below signal line by -0.0000\n\u2705 Strong bearish candle (-0.43%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 59,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-05-25T12:18:36.273021+03:30",
     "risk_reward_ratio": 1.500000000000013,
-    "entry_price": "0.00001427"
+    "entry_price": "0.00001427",
+    "closed_price": "1.3939e-05",
+    "closed_at": "2025-05-25T18:30:00+03:30"
   },
   {
     "symbol": "PEPE-USDT",
@@ -310,10 +312,12 @@
     "time": "2025-05-25T14:47:52.758197+03:30",
     "reasons": "\u2705 RSI in oversold zone (27.69) and improving\n\u2705 Price near/below lower Bollinger Band (0.0000)\n\u2705 Price at support (0.0000)\n\u2705 Strong bullish candle (+0.38%)",
     "score": 59,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-25T14:47:52.758197+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.00001297"
+    "entry_price": "0.00001297",
+    "closed_price": "1.2649e-05",
+    "closed_at": "2025-05-25T18:30:00+03:30"
   },
   {
     "symbol": "KCS-USDT",
