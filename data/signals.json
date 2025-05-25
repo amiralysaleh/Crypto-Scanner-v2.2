@@ -328,9 +328,11 @@
     "time": "2025-05-25T18:52:20.103967+03:30",
     "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0049\n\u2705 Price near/above upper Bollinger Band (-0.0782)\n\u2705 Price at resistance (11.2000)\n\u2705 Strong bearish candle (-0.39%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 64,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-25T18:52:20.103967+03:30",
     "risk_reward_ratio": 1.5000000000000235,
-    "entry_price": "11.14100000"
+    "entry_price": "11.14100000",
+    "closed_price": "11.193",
+    "closed_at": "2025-05-25T19:00:00+03:30"
   }
 ]
