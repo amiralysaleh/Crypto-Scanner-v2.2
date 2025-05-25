@@ -216,10 +216,12 @@
     "time": "2025-05-24T20:16:38.384314+03:30",
     "reasons": "\u2705 RSI in oversold zone (19.44) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0631)\n\u2705 Price at support (11.0960)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 59,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-24T20:16:38.384314+03:30",
     "risk_reward_ratio": 1.4999999999999856,
-    "entry_price": "11.18600000"
+    "entry_price": "11.18600000",
+    "closed_price": "11.126",
+    "closed_at": "2025-05-25T12:00:00+03:30"
   },
   {
     "symbol": "ETH-USDT",
