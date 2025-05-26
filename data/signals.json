@@ -366,5 +366,19 @@
     "entry_price": "1.98810000",
     "closed_price": "2.02",
     "closed_at": "2025-05-26T04:00:00+03:30"
+  },
+  {
+    "symbol": "GRT-USDT",
+    "type": "SELL",
+    "current_price": "0.11135000",
+    "target_price": "0.10947381",
+    "stop_loss": "0.11260079",
+    "time": "2025-05-26T05:29:08.072135+03:30",
+    "reasons": "\u2705 RSI in overbought zone (71.93) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0011)\n\u2705 Price at resistance (0.1125)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 59,
+    "status": "active",
+    "created_at": "2025-05-26T05:29:08.072135+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "0.11135000"
   }
 ]
