@@ -392,9 +392,11 @@
     "time": "2025-05-26T12:04:24.423224+03:30",
     "reasons": "\u2705 MACD crossed below signal line by -0.0000\n\u2705 Price near/above upper Bollinger Band (-0.0006)\n\u2705 Price at resistance (0.0974)\n\u2705 Strong bearish candle (-0.38%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 64,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-26T12:04:24.423224+03:30",
     "risk_reward_ratio": 1.5000000000000155,
-    "entry_price": "0.09660000"
+    "entry_price": "0.09660000",
+    "closed_price": "0.09703",
+    "closed_at": "2025-05-26T13:00:00+03:30"
   }
 ]
