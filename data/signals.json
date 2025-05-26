@@ -344,10 +344,12 @@
     "time": "2025-05-26T02:51:05.130829+03:30",
     "reasons": "\u2705 RSI in overbought zone (71.64) and declining\n\u2705 Price near/above upper Bollinger Band (0.1543)\n\u2705 Price at resistance (23.4670)\n\u2705 Strong bearish candle (-0.42%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-05-26T02:51:05.130829+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "23.27500000"
+    "entry_price": "23.27500000",
+    "closed_price": "23.41",
+    "closed_at": "2025-05-26T03:30:00+03:30"
   },
   {
     "symbol": "RUNE-USDT",
