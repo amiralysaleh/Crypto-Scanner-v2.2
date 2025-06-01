@@ -488,9 +488,11 @@
     "time": "2025-06-01T21:12:00.637685+03:30",
     "reasons": "\u2705 RSI in overbought zone (71.69) and declining\n\u2705 Price near/above upper Bollinger Band (-1.5591)\n\u2705 Price at resistance (254.4440)\n\u2705 Strong bearish candle (-0.31%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-06-01T21:12:00.637685+03:30",
     "risk_reward_ratio": 1.4999999999999947,
-    "entry_price": "252.10100000"
+    "entry_price": "252.10100000",
+    "closed_price": "246.909",
+    "closed_at": "2025-06-01T21:30:00+03:30"
   }
 ]
