@@ -606,5 +606,19 @@
     "entry_price": "54.59900000",
     "closed_price": "55.807",
     "closed_at": "2025-06-03T23:30:00+03:30"
+  },
+  {
+    "symbol": "ATOM-USDT",
+    "type": "SELL",
+    "current_price": "4.43160000",
+    "target_price": "4.39342051",
+    "stop_loss": "4.45705300",
+    "time": "2025-06-04T10:53:29.332126+03:30",
+    "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0007\n\u2705 MACD crossed below signal line by -0.0004\n\u2705 Price near/above upper Bollinger Band (-0.0355)\n\u2705 Price at resistance (4.4647)\n\u2705 Strong bearish candle (-0.30%)",
+    "score": 74,
+    "status": "active",
+    "created_at": "2025-06-04T10:53:29.332126+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "4.43160000"
   }
 ]
