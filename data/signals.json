@@ -808,10 +808,12 @@
     "time": "2025-06-10T02:52:15.971582+03:30",
     "reasons": "\u2705 RSI in overbought zone (71.42) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0000)\n\u2705 Price at resistance (0.0000)\n\u2705 Strong bearish candle (-0.54%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-10T02:52:15.971582+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.00001308"
+    "entry_price": "0.00001308",
+    "closed_price": "1.3213e-05",
+    "closed_at": "2025-06-10T03:30:00+03:30"
   },
   {
     "symbol": "OP-USDT",
@@ -822,9 +824,11 @@
     "time": "2025-06-10T02:52:36.940546+03:30",
     "reasons": "\u2705 RSI in overbought zone (73.17) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0051)\n\u2705 Price at resistance (0.6590)\n\u2705 Strong bearish candle (-0.91%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-10T02:52:36.940546+03:30",
     "risk_reward_ratio": 1.4999999999999913,
-    "entry_price": "0.65300000"
+    "entry_price": "0.65300000",
+    "closed_price": "0.669",
+    "closed_at": "2025-06-10T03:30:00+03:30"
   }
 ]
