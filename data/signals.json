@@ -856,9 +856,11 @@
     "time": "2025-06-11T16:20:58.262153+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0018\n\u2705 MACD crossed above signal line by 0.0023\n\u2705 Volume surge (2.23X)\n\u2705 Strong bullish candle (+1.62%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-11T16:20:58.262153+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "1.76510000"
+    "entry_price": "1.76510000",
+    "closed_price": "1.7482",
+    "closed_at": "2025-06-11T17:00:00+03:30"
   }
 ]
