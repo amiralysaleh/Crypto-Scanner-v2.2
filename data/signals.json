@@ -1000,10 +1000,12 @@
     "time": "2025-06-14T10:50:49.670480+03:30",
     "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0026\n\u2705 MACD crossed below signal line by -0.0011\n\u2705 Price at resistance (3.8298)\n\u2705 Strong bearish candle (-0.51%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-14T10:50:49.670480+03:30",
     "risk_reward_ratio": 1.499999999999991,
-    "entry_price": "3.79270000"
+    "entry_price": "3.79270000",
+    "closed_price": "3.8115",
+    "closed_at": "2025-06-14T11:00:00+03:30"
   },
   {
     "symbol": "TRX-USDT",
