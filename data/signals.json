@@ -1086,5 +1086,33 @@
     "entry_price": "0.28290000",
     "closed_price": "0.2813",
     "closed_at": "2025-06-16T16:30:00+03:30"
+  },
+  {
+    "symbol": "ATOM-USDT",
+    "type": "BUY",
+    "current_price": "4.07540000",
+    "target_price": "4.11321378",
+    "stop_loss": "4.05019081",
+    "time": "2025-06-17T16:20:29.057645+03:30",
+    "reasons": "\u2705 RSI in oversold zone (28.78) and improving\n\u2705 Price near/below lower Bollinger Band (0.0242)\n\u2705 Volume surge (1.67X)\n\u2705 Price at support (4.0550)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-06-17T16:20:29.057645+03:30",
+    "risk_reward_ratio": 1.4999999999999825,
+    "entry_price": "4.07540000"
+  },
+  {
+    "symbol": "ZEC-USDT",
+    "type": "BUY",
+    "current_price": "41.71300000",
+    "target_price": "42.30378263",
+    "stop_loss": "41.31914492",
+    "time": "2025-06-17T16:20:48.925536+03:30",
+    "reasons": "\u2705 RSI in oversold zone (29.33) and improving\n\u2705 MACD crossed above signal line by 0.0012\n\u2705 Price near/below lower Bollinger Band (0.2662)\n\u2705 Price at support (41.6200)",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-06-17T16:20:48.925536+03:30",
+    "risk_reward_ratio": 1.499999999999991,
+    "entry_price": "41.71300000"
   }
 ]
