@@ -1336,10 +1336,12 @@
     "time": "2025-06-24T02:15:32.681970+03:30",
     "reasons": "\u2705 RSI in overbought zone (72.92) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0130)\n\u2705 Price at resistance (2.1402)\n\u2705 Strong bearish candle (-0.70%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 68,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-24T02:15:32.681970+03:30",
     "risk_reward_ratio": 1.5000000000000115,
-    "entry_price": "2.12240000"
+    "entry_price": "2.12240000",
+    "closed_price": "2.1606",
+    "closed_at": "2025-06-24T08:30:00+03:30"
   },
   {
     "symbol": "APT-USDT",
@@ -1350,10 +1352,12 @@
     "time": "2025-06-24T02:15:34.645965+03:30",
     "reasons": "\u2705 RSI in overbought zone (72.99) and declining\n\u2705 Price near/above upper Bollinger Band (0.0058)\n\u2705 Price at resistance (4.3324)\n\u2705 Strong bearish candle (-0.31%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-24T02:15:34.645965+03:30",
     "risk_reward_ratio": 1.4999999999999931,
-    "entry_price": "4.31400000"
+    "entry_price": "4.31400000",
+    "closed_price": "4.364",
+    "closed_at": "2025-06-24T09:30:00+03:30"
   },
   {
     "symbol": "ICP-USDT",
@@ -1364,10 +1368,12 @@
     "time": "2025-06-24T02:15:37.426017+03:30",
     "reasons": "\u2705 RSI in overbought zone (73.66) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0053)\n\u2705 Price at resistance (4.9830)\n\u2705 Strong bearish candle (-0.62%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-24T02:15:37.426017+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "4.93700000"
+    "entry_price": "4.93700000",
+    "closed_price": "5.013",
+    "closed_at": "2025-06-24T09:00:00+03:30"
   },
   {
     "symbol": "XLM-USDT",
@@ -1378,10 +1384,12 @@
     "time": "2025-06-24T02:15:39.332419+03:30",
     "reasons": "\u2705 RSI in overbought zone (71.30) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0006)\n\u2705 Price at resistance (0.2456)\n\u2705 Strong bearish candle (-0.77%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-24T02:15:39.332419+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.24350000"
+    "entry_price": "0.24350000",
+    "closed_price": "0.2465",
+    "closed_at": "2025-06-24T08:30:00+03:30"
   },
   {
     "symbol": "VET-USDT",
@@ -1408,10 +1416,12 @@
     "time": "2025-06-24T02:15:44.823359+03:30",
     "reasons": "\u2705 RSI in overbought zone (75.45) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0034)\n\u2705 Price at resistance (0.5510)\n\u2705 Strong bearish candle (-0.36%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-24T02:15:44.823359+03:30",
     "risk_reward_ratio": 1.5000000000000135,
-    "entry_price": "0.54700000"
+    "entry_price": "0.54700000",
+    "closed_price": "0.56",
+    "closed_at": "2025-06-24T09:00:00+03:30"
   },
   {
     "symbol": "HBAR-USDT",
@@ -1422,10 +1432,12 @@
     "time": "2025-06-24T02:49:46.905088+03:30",
     "reasons": "\u2705 RSI in overbought zone (78.91) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0010)\n\u2705 Price at resistance (0.1522)\n\u2705 Strong bearish candle (-0.38%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-06-24T02:49:46.905088+03:30",
     "risk_reward_ratio": 1.4999999999999944,
-    "entry_price": "0.15108000"
+    "entry_price": "0.15108000",
+    "closed_price": "0.15461",
+    "closed_at": "2025-06-24T09:00:00+03:30"
   },
   {
     "symbol": "QNT-USDT",
