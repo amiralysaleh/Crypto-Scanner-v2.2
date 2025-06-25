@@ -1454,5 +1454,19 @@
     "entry_price": "98.78000000",
     "closed_price": "100.853",
     "closed_at": "2025-06-24T17:30:00+03:30"
+  },
+  {
+    "symbol": "LTC-USDT",
+    "type": "BUY",
+    "current_price": "85.04800000",
+    "target_price": "85.99891607",
+    "stop_loss": "84.41405595",
+    "time": "2025-06-25T18:18:14.193717+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0119\n\u2705 MACD crossed above signal line by 0.0149\n\u2705 Price near/below lower Bollinger Band (0.7705)\n\u2705 Strong bullish candle (+0.55%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 74,
+    "status": "active",
+    "created_at": "2025-06-25T18:18:14.193717+03:30",
+    "risk_reward_ratio": 1.4999999999999776,
+    "entry_price": "85.04800000"
   }
 ]
