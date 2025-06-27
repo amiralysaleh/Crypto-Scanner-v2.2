@@ -1566,5 +1566,19 @@
     "entry_price": "106921.50000000",
     "closed_price": "107337.1",
     "closed_at": "2025-06-27T06:30:00+03:30"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "type": "SELL",
+    "current_price": "107019.50000000",
+    "target_price": "106531.08616355",
+    "stop_loss": "107345.10922430",
+    "time": "2025-06-27T11:11:43.931070+03:30",
+    "reasons": "\u2705 Short EMA crossed below medium EMA by 8.3262\n\u2705 MACD crossed below signal line by -4.7472\n\u2705 Price near/above upper Bollinger Band (-574.5022)\n\u2705 Price at resistance (107733.8000)\n\u2705 Strong bearish candle (-0.30%)",
+    "score": 74,
+    "status": "active",
+    "created_at": "2025-06-27T11:11:43.931070+03:30",
+    "risk_reward_ratio": 1.4999999999999776,
+    "entry_price": "107019.50000000"
   }
 ]
