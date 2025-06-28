@@ -1630,5 +1630,19 @@
     "entry_price": "46.08000000",
     "closed_price": "45.93",
     "closed_at": "2025-06-28T12:30:00+03:30"
+  },
+  {
+    "symbol": "VET-USDT",
+    "type": "SELL",
+    "current_price": "0.02129000",
+    "target_price": "0.02107355",
+    "stop_loss": "0.02143430",
+    "time": "2025-06-29T02:13:56.827268+03:30",
+    "reasons": "\u2705 RSI in overbought zone (74.25) and declining\n\u2705 Price near/above upper Bollinger Band (0.0000)\n\u2705 Price at resistance (0.0214)\n\u2705 Strong bearish candle (-0.33%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-06-29T02:13:56.827268+03:30",
+    "risk_reward_ratio": 1.500000000000012,
+    "entry_price": "0.02129000"
   }
 ]
