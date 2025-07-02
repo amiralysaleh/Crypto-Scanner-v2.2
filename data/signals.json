@@ -1822,5 +1822,33 @@
     "entry_price": "4.92400000",
     "closed_price": "4.982",
     "closed_at": "2025-07-02T19:30:00+03:30"
+  },
+  {
+    "symbol": "ICP-USDT",
+    "type": "SELL",
+    "current_price": "5.03600000",
+    "target_price": "4.97163485",
+    "stop_loss": "5.07891010",
+    "time": "2025-07-02T20:51:43.566517+03:30",
+    "reasons": "\u2705 RSI in overbought zone (80.71) and declining\n\u2705 Price near/above upper Bollinger Band (0.0078)\n\u2705 Price at resistance (5.0660)\n\u2705 Strong bearish candle (-0.32%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-02T20:51:43.566517+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "5.03600000"
+  },
+  {
+    "symbol": "LPT-USDT",
+    "type": "SELL",
+    "current_price": "6.28210000",
+    "target_price": "6.18205487",
+    "stop_loss": "6.34879676",
+    "time": "2025-07-02T20:52:07.565774+03:30",
+    "reasons": "\u2705 RSI in overbought zone (73.84) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0091)\n\u2705 Price at resistance (6.3252)\n\u2705 Strong bearish candle (-0.35%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-02T20:52:07.565774+03:30",
+    "risk_reward_ratio": 1.5000000000000067,
+    "entry_price": "6.28210000"
   }
 ]
