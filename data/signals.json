@@ -2126,5 +2126,19 @@
     "entry_price": "0.16453000",
     "closed_price": "0.16524",
     "closed_at": "2025-07-06T15:30:00+03:30"
+  },
+  {
+    "symbol": "SHIB-USDT",
+    "type": "SELL",
+    "current_price": "0.00001181",
+    "target_price": "0.00001170",
+    "stop_loss": "0.00001189",
+    "time": "2025-07-06T18:13:22.396071+03:30",
+    "reasons": "\u2705 RSI in overbought zone (74.42) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0000)\n\u2705 Price at resistance (0.0000)\n\u2705 Strong bearish candle (-0.39%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-06T18:13:22.396071+03:30",
+    "risk_reward_ratio": 1.5000000000000224,
+    "entry_price": "0.00001181"
   }
 ]
