@@ -2030,5 +2030,61 @@
     "entry_price": "2.21387000",
     "closed_price": "2.203",
     "closed_at": "2025-07-05T21:30:00+03:30"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "type": "SELL",
+    "current_price": "0.57230000",
+    "target_price": "0.56825973",
+    "stop_loss": "0.57499351",
+    "time": "2025-07-06T11:58:35.564587+03:30",
+    "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0001\n\u2705 MACD crossed below signal line by -0.0000\n\u2705 Price near/above upper Bollinger Band (-0.0045)\n\u2705 Price at resistance (0.5771)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 74,
+    "status": "active",
+    "created_at": "2025-07-06T11:58:35.564587+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "0.57230000"
+  },
+  {
+    "symbol": "DOGE-USDT",
+    "type": "SELL",
+    "current_price": "0.16321000",
+    "target_price": "0.16229025",
+    "stop_loss": "0.16382317",
+    "time": "2025-07-06T11:58:37.079976+03:30",
+    "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0001\n\u2705 MACD crossed below signal line by -0.0000\n\u2705 Price near/above upper Bollinger Band (-0.0014)\n\u2705 Price at resistance (0.1643)\n\u2705 Strong bearish candle (-0.38%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 84,
+    "status": "active",
+    "created_at": "2025-07-06T11:58:37.079976+03:30",
+    "risk_reward_ratio": 1.4999999999999774,
+    "entry_price": "0.16321000"
+  },
+  {
+    "symbol": "AVAX-USDT",
+    "type": "SELL",
+    "current_price": "17.76400000",
+    "target_price": "17.63864708",
+    "stop_loss": "17.84756862",
+    "time": "2025-07-06T11:58:41.727605+03:30",
+    "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0015\n\u2705 MACD crossed below signal line by -0.0017\n\u2705 Price at resistance (17.9230)\n\u2705 Strong bearish candle (-0.48%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-06T11:58:41.727605+03:30",
+    "risk_reward_ratio": 1.5000000000000213,
+    "entry_price": "17.76400000"
+  },
+  {
+    "symbol": "ICP-USDT",
+    "type": "SELL",
+    "current_price": "4.73400000",
+    "target_price": "4.69983769",
+    "stop_loss": "4.75677487",
+    "time": "2025-07-06T11:58:51.390702+03:30",
+    "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0005\n\u2705 MACD crossed below signal line by -0.0002\n\u2705 Price at resistance (4.7730)\n\u2705 Strong bearish candle (-0.57%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-06T11:58:51.390702+03:30",
+    "risk_reward_ratio": 1.500000000000039,
+    "entry_price": "4.73400000"
   }
 ]
