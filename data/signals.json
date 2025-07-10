@@ -2248,9 +2248,11 @@
     "time": "2025-07-11T00:54:05.403353+03:30",
     "reasons": "\u2705 MACD crossed above signal line by 0.0000\n\u2705 Price near/below lower Bollinger Band (0.0019)\n\u2705 Volume surge (5.22X)\n\u2705 Price at support (0.2908)\n\u2705 Strong bullish candle (+0.41%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 74,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-07-11T00:54:05.403353+03:30",
     "risk_reward_ratio": 1.4999999999999578,
-    "entry_price": "0.29220000"
+    "entry_price": "0.29220000",
+    "closed_price": "0.2929",
+    "closed_at": "2025-07-11T01:00:00+03:30"
   }
 ]
