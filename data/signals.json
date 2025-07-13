@@ -2286,5 +2286,19 @@
     "entry_price": "0.00824100",
     "closed_price": "0.008386",
     "closed_at": "2025-07-12T05:00:00+03:30"
+  },
+  {
+    "symbol": "AAVE-USDT",
+    "type": "SELL",
+    "current_price": "314.96700000",
+    "target_price": "310.17259063",
+    "stop_loss": "318.16327292",
+    "time": "2025-07-13T18:13:51.508791+03:30",
+    "reasons": "\u2705 RSI in overbought zone (73.68) and declining\n\u2705 Price near/above upper Bollinger Band (2.0518)\n\u2705 Price at resistance (317.4730)\n\u2705 Strong bearish candle (-0.37%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-13T18:13:51.508791+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "314.96700000"
   }
 ]
