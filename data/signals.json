@@ -2360,10 +2360,12 @@
     "time": "2025-07-18T00:18:25.305590+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0048\n\u2705 MACD crossed above signal line by 0.0003\n\u2705 Volume surge (1.74X)\n\u2705 Strong bullish candle (+6.40%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 68,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-18T00:18:25.305590+03:30",
     "risk_reward_ratio": 1.4999999999999964,
-    "entry_price": "1.01680000"
+    "entry_price": "1.01680000",
+    "closed_price": "0.9952",
+    "closed_at": "2025-07-18T01:00:00+03:30"
   },
   {
     "symbol": "SOL-USDT",
@@ -2374,10 +2376,12 @@
     "time": "2025-07-18T00:53:30.608491+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.1275\n\u2705 MACD crossed above signal line by 0.0031\n\u2705 Volume surge (1.84X)\n\u2705 Strong bullish candle (+1.65%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-18T00:53:30.608491+03:30",
     "risk_reward_ratio": 1.499999999999993,
-    "entry_price": "176.35400000"
+    "entry_price": "176.35400000",
+    "closed_price": "175.486",
+    "closed_at": "2025-07-18T01:00:00+03:30"
   },
   {
     "symbol": "ETC-USDT",
@@ -2388,10 +2392,12 @@
     "time": "2025-07-18T00:53:52.721720+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0255\n\u2705 MACD crossed above signal line by 0.0094\n\u2705 Volume surge (5.47X)\n\u2705 Strong bullish candle (+1.81%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-18T00:53:52.721720+03:30",
     "risk_reward_ratio": 1.4999999999999922,
-    "entry_price": "20.16080000"
+    "entry_price": "20.16080000",
+    "closed_price": "20.0521",
+    "closed_at": "2025-07-18T01:00:00+03:30"
   },
   {
     "symbol": "VET-USDT",
@@ -2402,10 +2408,12 @@
     "time": "2025-07-18T00:53:58.885696+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0000\n\u2705 MACD crossed above signal line by 0.0000\n\u2705 Volume surge (2.71X)\n\u2705 Strong bullish candle (+2.87%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-18T00:53:58.885696+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.02613000"
+    "entry_price": "0.02613000",
+    "closed_price": "0.02608",
+    "closed_at": "2025-07-18T01:00:00+03:30"
   },
   {
     "symbol": "NEO-USDT",
@@ -2416,10 +2424,12 @@
     "time": "2025-07-18T00:54:12.501138+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0132\n\u2705 MACD crossed above signal line by 0.0022\n\u2705 Volume surge (2.44X)\n\u2705 Strong bullish candle (+2.63%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-18T00:54:12.501138+03:30",
     "risk_reward_ratio": 1.5000000000000047,
-    "entry_price": "6.81120000"
+    "entry_price": "6.81120000",
+    "closed_price": "6.7538",
+    "closed_at": "2025-07-18T01:00:00+03:30"
   },
   {
     "symbol": "FIL-USDT",
@@ -2430,10 +2440,12 @@
     "time": "2025-07-18T00:54:39.272568+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0010\n\u2705 MACD crossed above signal line by 0.0010\n\u2705 Volume surge (17.51X)\n\u2705 Strong bullish candle (+2.49%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-18T00:54:39.272568+03:30",
     "risk_reward_ratio": 1.5000000000000062,
-    "entry_price": "2.71600000"
+    "entry_price": "2.71600000",
+    "closed_price": "2.7015",
+    "closed_at": "2025-07-18T01:00:00+03:30"
   },
   {
     "symbol": "RUNE-USDT",
@@ -2444,9 +2456,11 @@
     "time": "2025-07-18T00:54:43.661179+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0030\n\u2705 MACD crossed above signal line by 0.0003\n\u2705 Volume surge (2.05X)\n\u2705 Strong bullish candle (+1.76%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-18T00:54:43.661179+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "1.65640000"
+    "entry_price": "1.65640000",
+    "closed_price": "1.6358",
+    "closed_at": "2025-07-18T01:00:00+03:30"
   }
 ]
