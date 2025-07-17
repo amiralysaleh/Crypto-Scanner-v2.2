@@ -2462,5 +2462,19 @@
     "entry_price": "1.65640000",
     "closed_price": "1.6358",
     "closed_at": "2025-07-18T01:00:00+03:30"
+  },
+  {
+    "symbol": "OP-USDT",
+    "type": "BUY",
+    "current_price": "0.71900000",
+    "target_price": "0.73945660",
+    "stop_loss": "0.70536227",
+    "time": "2025-07-18T01:54:43.093441+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0006\n\u2705 MACD crossed above signal line by 0.0006\n\u2705 Volume surge (3.52X)\n\u2705 Strong bullish candle (+1.13%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 68,
+    "status": "active",
+    "created_at": "2025-07-18T01:54:43.093441+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "0.71900000"
   }
 ]
