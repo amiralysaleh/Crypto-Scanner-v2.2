@@ -2520,10 +2520,12 @@
     "time": "2025-07-20T12:55:05.576585+03:30",
     "reasons": "\u2705 RSI in overbought zone (72.22) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0118)\n\u2705 Price at resistance (3.9974)\n\u2705 Strong bearish candle (-0.38%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-20T12:55:05.576585+03:30",
     "risk_reward_ratio": 1.499999999999989,
-    "entry_price": "3.97440000"
+    "entry_price": "3.97440000",
+    "closed_price": "4.032",
+    "closed_at": "2025-07-20T17:00:00+03:30"
   },
   {
     "symbol": "CRO-USDT",
