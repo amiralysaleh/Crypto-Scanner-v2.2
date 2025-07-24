@@ -2558,5 +2558,19 @@
     "entry_price": "0.00985000",
     "closed_price": "0.009717",
     "closed_at": "2025-07-23T04:30:00+03:30"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "type": "BUY",
+    "current_price": "118881.50000000",
+    "target_price": "119685.29969674",
+    "stop_loss": "118345.63353551",
+    "time": "2025-07-24T18:20:51.118941+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 58.4829\n\u2705 MACD crossed above signal line by 20.2466\n\u2705 Price at support (117824.9000)\n\u2705 Strong bullish candle (+0.62%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-24T18:20:51.118941+03:30",
+    "risk_reward_ratio": 1.499999999999973,
+    "entry_price": "118881.50000000"
   }
 ]
