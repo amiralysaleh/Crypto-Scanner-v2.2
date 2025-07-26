@@ -2590,5 +2590,33 @@
     "entry_price": "115842.10000000",
     "closed_price": "115666.8",
     "closed_at": "2025-07-25T08:30:00+03:30"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "type": "BUY",
+    "current_price": "783.27600000",
+    "target_price": "786.64386127",
+    "stop_loss": "781.03075916",
+    "time": "2025-07-26T22:48:41.967990+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0331\n\u2705 MACD crossed above signal line by 0.0251\n\u2705 Price near/below lower Bollinger Band (4.2947)\n\u2705 Price at support (778.5120)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 74,
+    "status": "active",
+    "created_at": "2025-07-26T22:48:41.967990+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "783.27600000"
+  },
+  {
+    "symbol": "CRV-USDT",
+    "type": "BUY",
+    "current_price": "1.07660000",
+    "target_price": "1.11023561",
+    "stop_loss": "1.05417626",
+    "time": "2025-07-26T22:49:38.444155+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0019\n\u2705 MACD crossed above signal line by 0.0006\n\u2705 Volume surge (7.09X)\n\u2705 Strong bullish candle (+1.40%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 68,
+    "status": "active",
+    "created_at": "2025-07-26T22:49:38.444155+03:30",
+    "risk_reward_ratio": 1.50000000000001,
+    "entry_price": "1.07660000"
   }
 ]
