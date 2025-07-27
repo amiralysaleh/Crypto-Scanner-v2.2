@@ -2744,9 +2744,11 @@
     "time": "2025-07-27T23:10:48.041100+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0000\n\u2705 MACD crossed above signal line by 0.0000\n\u2705 Price near/below lower Bollinger Band (0.0022)\n\u2705 Price at support (0.3188)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 74,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-27T23:10:48.041100+03:30",
     "risk_reward_ratio": 1.4999999999999767,
-    "entry_price": "0.32180000"
+    "entry_price": "0.32180000",
+    "closed_price": "0.3201",
+    "closed_at": "2025-07-27T23:30:00+03:30"
   }
 ]
