@@ -2750,5 +2750,19 @@
     "entry_price": "0.32180000",
     "closed_price": "0.3201",
     "closed_at": "2025-07-27T23:30:00+03:30"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "type": "SELL",
+    "current_price": "855.02600000",
+    "target_price": "845.01603800",
+    "stop_loss": "861.69930800",
+    "time": "2025-07-28T12:06:19.100642+03:30",
+    "reasons": "\u2705 RSI in overbought zone (70.17) and declining\n\u2705 MACD crossed below signal line by -0.0720\n\u2705 Price near/above upper Bollinger Band (-2.5924)\n\u2705 Price at resistance (860.0000)\n\u2705 Strong bearish candle (-0.38%)",
+    "score": 79,
+    "status": "active",
+    "created_at": "2025-07-28T12:06:19.100642+03:30",
+    "risk_reward_ratio": 1.5000000000000084,
+    "entry_price": "855.02600000"
   }
 ]
