@@ -2776,10 +2776,12 @@
     "time": "2025-07-28T18:22:26.251824+03:30",
     "reasons": "\u2705 RSI in oversold zone (27.41) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0002)\n\u2705 Price at support (0.2695)\n\u2705 Strong bullish candle (+0.37%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-28T18:22:26.251824+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.27140000"
+    "entry_price": "0.27140000",
+    "closed_price": "0.2679",
+    "closed_at": "2025-07-28T19:30:00+03:30"
   },
   {
     "symbol": "SUI-USDT",
@@ -2790,10 +2792,12 @@
     "time": "2025-07-28T18:22:28.088980+03:30",
     "reasons": "\u2705 RSI in oversold zone (28.69) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0133)\n\u2705 Price at support (4.0681)\n\u2705 Strong bullish candle (+0.45%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-28T18:22:28.088980+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "4.10190000"
+    "entry_price": "4.10190000",
+    "closed_price": "4.0624",
+    "closed_at": "2025-07-28T19:00:00+03:30"
   },
   {
     "symbol": "RUNE-USDT",
@@ -2818,10 +2822,12 @@
     "time": "2025-07-28T18:58:18.947660+03:30",
     "reasons": "\u2705 RSI in oversold zone (29.84) and improving\n\u2705 Price near/below lower Bollinger Band (0.0000)\n\u2705 Price at support (0.0000)\n\u2705 Strong bullish candle (+0.35%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-28T18:58:18.947660+03:30",
     "risk_reward_ratio": 1.4999999999999885,
-    "entry_price": "0.00001371"
+    "entry_price": "0.00001371",
+    "closed_price": "1.3634e-05",
+    "closed_at": "2025-07-28T19:00:00+03:30"
   },
   {
     "symbol": "DOT-USDT",
@@ -2832,10 +2838,12 @@
     "time": "2025-07-28T18:58:20.716049+03:30",
     "reasons": "\u2705 RSI in oversold zone (29.33) and improving\n\u2705 Price near/below lower Bollinger Band (0.0147)\n\u2705 Price at support (4.0741)\n\u2705 Strong bullish candle (+0.38%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-28T18:58:20.716049+03:30",
     "risk_reward_ratio": 1.5000000000000102,
-    "entry_price": "4.10590000"
+    "entry_price": "4.10590000",
+    "closed_price": "4.071",
+    "closed_at": "2025-07-28T19:00:00+03:30"
   },
   {
     "symbol": "LTC-USDT",
@@ -2860,10 +2868,12 @@
     "time": "2025-07-28T18:58:29.849908+03:30",
     "reasons": "\u2705 RSI in oversold zone (29.05) and improving\n\u2705 Price near/below lower Bollinger Band (0.0082)\n\u2705 Price at support (2.8270)\n\u2705 Strong bullish candle (+0.44%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-28T18:58:29.849908+03:30",
     "risk_reward_ratio": 1.500000000000006,
-    "entry_price": "2.84950000"
+    "entry_price": "2.84950000",
+    "closed_price": "2.826",
+    "closed_at": "2025-07-28T19:00:00+03:30"
   },
   {
     "symbol": "AAVE-USDT",
@@ -2874,10 +2884,12 @@
     "time": "2025-07-28T18:58:44.018348+03:30",
     "reasons": "\u2705 RSI in oversold zone (29.89) and improving\n\u2705 Price near/below lower Bollinger Band (0.8276)\n\u2705 Price at support (291.0580)\n\u2705 Strong bullish candle (+0.75%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-28T18:58:44.018348+03:30",
     "risk_reward_ratio": 1.4999999999999907,
-    "entry_price": "293.67900000"
+    "entry_price": "293.67900000",
+    "closed_price": "290.745",
+    "closed_at": "2025-07-28T19:30:00+03:30"
   },
   {
     "symbol": "FET-USDT",
@@ -2888,10 +2900,12 @@
     "time": "2025-07-28T18:59:12.511926+03:30",
     "reasons": "\u2705 RSI in oversold zone (26.53) and improving\n\u2705 Price near/below lower Bollinger Band (0.0021)\n\u2705 Price at support (0.7277)\n\u2705 Strong bullish candle (+0.31%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-07-28T18:59:12.511926+03:30",
     "risk_reward_ratio": 1.5000000000000053,
-    "entry_price": "0.73310000"
+    "entry_price": "0.73310000",
+    "closed_price": "0.724",
+    "closed_at": "2025-07-28T19:00:00+03:30"
   },
   {
     "symbol": "KDA-USDT",
