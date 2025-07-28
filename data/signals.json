@@ -2766,5 +2766,47 @@
     "entry_price": "855.02600000",
     "closed_price": "845.577",
     "closed_at": "2025-07-28T16:30:00+03:30"
+  },
+  {
+    "symbol": "ALGO-USDT",
+    "type": "BUY",
+    "current_price": "0.27140000",
+    "target_price": "0.27654267",
+    "stop_loss": "0.26797155",
+    "time": "2025-07-28T18:22:26.251824+03:30",
+    "reasons": "\u2705 RSI in oversold zone (27.41) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0002)\n\u2705 Price at support (0.2695)\n\u2705 Strong bullish candle (+0.37%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-28T18:22:26.251824+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "0.27140000"
+  },
+  {
+    "symbol": "SUI-USDT",
+    "type": "BUY",
+    "current_price": "4.10190000",
+    "target_price": "4.18581182",
+    "stop_loss": "4.04595879",
+    "time": "2025-07-28T18:22:28.088980+03:30",
+    "reasons": "\u2705 RSI in oversold zone (28.69) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0133)\n\u2705 Price at support (4.0681)\n\u2705 Strong bullish candle (+0.45%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-28T18:22:28.088980+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "4.10190000"
+  },
+  {
+    "symbol": "RUNE-USDT",
+    "type": "BUY",
+    "current_price": "1.43480000",
+    "target_price": "1.45982975",
+    "stop_loss": "1.41811350",
+    "time": "2025-07-28T18:22:58.126824+03:30",
+    "reasons": "\u2705 RSI in oversold zone (24.70) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0043)\n\u2705 Price at support (1.4262)\n\u2705 Strong bullish candle (+0.31%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-07-28T18:22:58.126824+03:30",
+    "risk_reward_ratio": 1.5000000000000067,
+    "entry_price": "1.43480000"
   }
 ]
