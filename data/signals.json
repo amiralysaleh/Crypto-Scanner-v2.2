@@ -3102,5 +3102,19 @@
     "entry_price": "6.94700000",
     "closed_price": "7.076",
     "closed_at": "2025-08-05T15:00:00+03:30"
+  },
+  {
+    "symbol": "ZEC-USDT",
+    "type": "BUY",
+    "current_price": "35.36600000",
+    "target_price": "35.83684449",
+    "stop_loss": "35.05210367",
+    "time": "2025-08-05T19:00:47.424123+03:30",
+    "reasons": "\u2705 RSI in oversold zone (26.78) and improving\n\u2705 Price near/below lower Bollinger Band (0.0760)\n\u2705 Volume surge (7.99X)\n\u2705 Price at support (35.2800)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-08-05T19:00:47.424123+03:30",
+    "risk_reward_ratio": 1.5000000000000113,
+    "entry_price": "35.36600000"
   }
 ]
