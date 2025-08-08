@@ -3128,9 +3128,11 @@
     "time": "2025-08-08T17:12:09.503249+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0038\n\u2705 Price near/below lower Bollinger Band (0.1213)\n\u2705 Volume surge (2.88X)\n\u2705 Price at support (15.2100)\n\u2705 Strong bullish candle (+0.46%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 74,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-08T17:12:09.503249+03:30",
     "risk_reward_ratio": 1.500000000000017,
-    "entry_price": "15.32000000"
+    "entry_price": "15.32000000",
+    "closed_price": "15.44",
+    "closed_at": "2025-08-08T17:30:00+03:30"
   }
 ]
