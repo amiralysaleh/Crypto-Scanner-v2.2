@@ -3164,5 +3164,19 @@
     "created_at": "2025-08-09T05:27:25.579153+03:30",
     "risk_reward_ratio": 1.499999999999992,
     "entry_price": "3.30486000"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "type": "BUY",
+    "current_price": "116976.00000000",
+    "target_price": "117369.15398190",
+    "stop_loss": "116713.89734540",
+    "time": "2025-08-09T08:53:42.751162+03:30",
+    "reasons": "\u2705 MACD crossed above signal line by 10.1704\n\u2705 Price near/below lower Bollinger Band (730.1846)\n\u2705 Volume surge (2.34X)\n\u2705 Price at support (116344.3000)\n\u2705 Strong bullish candle (+0.45%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 74,
+    "status": "active",
+    "created_at": "2025-08-09T08:53:42.751162+03:30",
+    "risk_reward_ratio": 1.4999999999999722,
+    "entry_price": "116976.00000000"
   }
 ]
