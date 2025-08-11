@@ -3208,10 +3208,12 @@
     "time": "2025-08-11T16:24:07.781305+03:30",
     "reasons": "\u2705 RSI in oversold zone (24.53) and improving\n\u2705 Price near/below lower Bollinger Band (0.0453)\n\u2705 Volume surge (1.31X)\n\u2705 Price at support (7.4310)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-11T16:24:07.781305+03:30",
     "risk_reward_ratio": 1.5000000000000042,
-    "entry_price": "7.48000000"
+    "entry_price": "7.48000000",
+    "closed_price": "7.579",
+    "closed_at": "2025-08-11T18:00:00+03:30"
   },
   {
     "symbol": "DASH-USDT",
