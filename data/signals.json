@@ -3288,9 +3288,11 @@
     "time": "2025-08-15T01:54:57.196973+03:30",
     "reasons": "\u2705 RSI in oversold zone (28.37) and improving\n\u2705 MACD crossed above signal line by 0.0053\n\u2705 Price near/below lower Bollinger Band (0.1379)\n\u2705 Strong bullish candle (+0.33%)",
     "score": 69,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-15T01:54:57.196973+03:30",
     "risk_reward_ratio": 1.4999999999999964,
-    "entry_price": "16.23400000"
+    "entry_price": "16.23400000",
+    "closed_price": "16.534",
+    "closed_at": "2025-08-15T05:30:00+03:30"
   }
 ]
