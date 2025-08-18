@@ -3412,10 +3412,12 @@
     "time": "2025-08-18T07:19:23.146715+03:30",
     "reasons": "\u2705 RSI in oversold zone (26.91) and improving\n\u2705 Price near/below lower Bollinger Band (0.0037)\n\u2705 Price at support (10.5191)\n\u2705 Strong bullish candle (+0.33%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-18T07:19:23.146715+03:30",
     "risk_reward_ratio": 1.499999999999993,
-    "entry_price": "10.61060000"
+    "entry_price": "10.61060000",
+    "closed_price": "10.3523",
+    "closed_at": "2025-08-18T09:30:00+03:30"
   },
   {
     "symbol": "VET-USDT",
@@ -3426,10 +3428,12 @@
     "time": "2025-08-18T07:19:38.058067+03:30",
     "reasons": "\u2705 RSI in oversold zone (23.65) and improving\n\u2705 Price near/below lower Bollinger Band (0.0001)\n\u2705 Volume surge (1.44X)\n\u2705 Price at support (0.0237)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-18T07:19:38.058067+03:30",
     "risk_reward_ratio": 1.5000000000000162,
-    "entry_price": "0.02388000"
+    "entry_price": "0.02388000",
+    "closed_price": "0.02363",
+    "closed_at": "2025-08-18T09:30:00+03:30"
   },
   {
     "symbol": "ALGO-USDT",
@@ -3472,9 +3476,11 @@
     "time": "2025-08-18T07:20:18.864305+03:30",
     "reasons": "\u2705 RSI in oversold zone (24.71) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0002)\n\u2705 Volume surge (1.52X)\n\u2705 Price at support (1.3175)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-18T07:20:18.864305+03:30",
     "risk_reward_ratio": 1.5000000000000089,
-    "entry_price": "1.32590000"
+    "entry_price": "1.32590000",
+    "closed_price": "1.3168",
+    "closed_at": "2025-08-18T10:00:00+03:30"
   }
 ]
