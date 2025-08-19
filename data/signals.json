@@ -3516,5 +3516,19 @@
     "created_at": "2025-08-19T20:21:03.956914+03:30",
     "risk_reward_ratio": 1.5,
     "entry_price": "0.86600000"
+  },
+  {
+    "symbol": "TRX-USDT",
+    "type": "SELL",
+    "current_price": "0.34870000",
+    "target_price": "0.34625578",
+    "stop_loss": "0.35032948",
+    "time": "2025-08-20T03:10:41.111013+03:30",
+    "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0000\n\u2705 MACD crossed below signal line by -0.0000\n\u2705 Price near/above upper Bollinger Band (-0.0024)\n\u2705 Price at resistance (0.3513)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 74,
+    "status": "active",
+    "created_at": "2025-08-20T03:10:41.111013+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "0.34870000"
   }
 ]
