@@ -3512,10 +3512,12 @@
     "time": "2025-08-19T20:21:03.956914+03:30",
     "reasons": "\u2705 RSI in oversold zone (25.87) and improving\n\u2705 Price near/below lower Bollinger Band (-0.0030)\n\u2705 Price at support (0.8629)\n\u2705 Strong bullish candle (+0.31%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 68,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-19T20:21:03.956914+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.86600000"
+    "entry_price": "0.86600000",
+    "closed_price": "0.8479",
+    "closed_at": "2025-08-20T02:30:00+03:30"
   },
   {
     "symbol": "TRX-USDT",
