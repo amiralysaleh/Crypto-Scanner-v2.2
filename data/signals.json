@@ -3550,5 +3550,19 @@
     "entry_price": "113270.00000000",
     "closed_price": "113751.6",
     "closed_at": "2025-08-20T15:30:00+03:30"
+  },
+  {
+    "symbol": "BAND-USDT",
+    "type": "BUY",
+    "current_price": "0.90880000",
+    "target_price": "0.95412960",
+    "stop_loss": "0.87858027",
+    "time": "2025-08-21T16:19:42.107073+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0044\n\u2705 MACD crossed above signal line by 0.0015\n\u2705 Volume surge (6.02X)\n\u2705 Strong bullish candle (+9.97%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 68,
+    "status": "active",
+    "created_at": "2025-08-21T16:19:42.107073+03:30",
+    "risk_reward_ratio": 1.4999999999999962,
+    "entry_price": "0.90880000"
   }
 ]
