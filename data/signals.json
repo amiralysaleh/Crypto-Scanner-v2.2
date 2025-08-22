@@ -3614,5 +3614,47 @@
     "entry_price": "4.41130000",
     "closed_price": "4.3617",
     "closed_at": "2025-08-22T14:30:00+03:30"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "type": "BUY",
+    "current_price": "4562.07000000",
+    "target_price": "4663.53177660",
+    "stop_loss": "4494.42881560",
+    "time": "2025-08-22T17:52:20.921135+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 30.0321\n\u2705 MACD crossed above signal line by 12.6372\n\u2705 Volume surge (4.21X)\n\u2705 Strong bullish candle (+6.33%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-08-22T17:52:20.921135+03:30",
+    "risk_reward_ratio": 1.4999999999999933,
+    "entry_price": "4562.07000000"
+  },
+  {
+    "symbol": "UNI-USDT",
+    "type": "BUY",
+    "current_price": "10.68400000",
+    "target_price": "10.95148614",
+    "stop_loss": "10.50567591",
+    "time": "2025-08-22T17:52:36.041480+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0018\n\u2705 MACD crossed above signal line by 0.0084\n\u2705 Volume surge (1.67X)\n\u2705 Strong bullish candle (+4.62%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-08-22T17:52:36.041480+03:30",
+    "risk_reward_ratio": 1.50000000000001,
+    "entry_price": "10.68400000"
+  },
+  {
+    "symbol": "AAVE-USDT",
+    "type": "BUY",
+    "current_price": "314.27100000",
+    "target_price": "322.50102350",
+    "stop_loss": "308.78431766",
+    "time": "2025-08-22T17:52:59.497671+03:30",
+    "reasons": "\u2705 Short EMA crossed above medium EMA by 0.9233\n\u2705 MACD crossed above signal line by 0.5798\n\u2705 Volume surge (8.05X)\n\u2705 Strong bullish candle (+3.92%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
+    "score": 68,
+    "status": "active",
+    "created_at": "2025-08-22T17:52:59.497671+03:30",
+    "risk_reward_ratio": 1.5,
+    "entry_price": "314.27100000"
   }
 ]
