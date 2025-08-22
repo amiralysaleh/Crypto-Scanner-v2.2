@@ -3704,10 +3704,12 @@
     "time": "2025-08-22T20:19:03.227615+03:30",
     "reasons": "\u2705 RSI in overbought zone (76.16) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0136)\n\u2705 Price at resistance (24.9800)\n\u2705 Strong bearish candle (-0.32%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T20:19:03.227615+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "24.81600000"
+    "entry_price": "24.81600000",
+    "closed_price": "25.146",
+    "closed_at": "2025-08-22T23:30:00+03:30"
   },
   {
     "symbol": "INJ-USDT",
@@ -3748,10 +3750,12 @@
     "time": "2025-08-22T20:20:13.788155+03:30",
     "reasons": "\u2705 RSI in overbought zone (72.88) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0027)\n\u2705 Price at resistance (0.4066)\n\u2705 Strong bearish candle (-0.32%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T20:20:13.788155+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.40350000"
+    "entry_price": "0.40350000",
+    "closed_price": "0.4112",
+    "closed_at": "2025-08-22T23:00:00+03:30"
   },
   {
     "symbol": "LTC-USDT",
@@ -3776,10 +3780,12 @@
     "time": "2025-08-22T21:12:33.158902+03:30",
     "reasons": "\u2705 RSI in overbought zone (72.24) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0407)\n\u2705 Price at resistance (4.7097)\n\u2705 Strong bearish candle (-0.56%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T21:12:33.158902+03:30",
     "risk_reward_ratio": 1.5000000000000147,
-    "entry_price": "4.67470000"
+    "entry_price": "4.67470000",
+    "closed_price": "4.729",
+    "closed_at": "2025-08-22T23:00:00+03:30"
   },
   {
     "symbol": "VET-USDT",
