@@ -3720,10 +3720,12 @@
     "time": "2025-08-22T20:19:18.169653+03:30",
     "reasons": "\u2705 RSI in overbought zone (73.07) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0621)\n\u2705 Price at resistance (14.8390)\n\u2705 Strong bearish candle (-0.71%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 68,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T20:19:18.169653+03:30",
     "risk_reward_ratio": 1.499999999999997,
-    "entry_price": "14.70000000"
+    "entry_price": "14.70000000",
+    "closed_price": "14.96",
+    "closed_at": "2025-08-23T00:00:00+03:30"
   },
   {
     "symbol": "AR-USDT",
@@ -3766,10 +3768,12 @@
     "time": "2025-08-22T21:12:23.691115+03:30",
     "reasons": "\u2705 RSI in overbought zone (72.71) and declining\n\u2705 Price near/above upper Bollinger Band (-1.1143)\n\u2705 Price at resistance (122.7400)\n\u2705 Strong bearish candle (-0.54%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T21:12:23.691115+03:30",
     "risk_reward_ratio": 1.50000000000001,
-    "entry_price": "122.00000000"
+    "entry_price": "122.00000000",
+    "closed_price": "123.65",
+    "closed_at": "2025-08-23T00:30:00+03:30"
   },
   {
     "symbol": "APT-USDT",
@@ -3796,10 +3800,12 @@
     "time": "2025-08-22T21:12:41.235950+03:30",
     "reasons": "\u2705 RSI in overbought zone (75.28) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0002)\n\u2705 Price at resistance (0.0252)\n\u2705 Strong bearish candle (-0.44%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T21:12:41.235950+03:30",
     "risk_reward_ratio": 1.5000000000000062,
-    "entry_price": "0.02507000"
+    "entry_price": "0.02507000",
+    "closed_price": "0.02532",
+    "closed_at": "2025-08-23T00:00:00+03:30"
   },
   {
     "symbol": "RUNE-USDT",
