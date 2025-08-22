@@ -3672,10 +3672,12 @@
     "time": "2025-08-22T20:18:56.953225+03:30",
     "reasons": "\u2705 RSI in overbought zone (74.43) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0015)\n\u2705 Price at resistance (0.2372)\n\u2705 Strong bearish candle (-0.44%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 68,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T20:18:56.953225+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "0.23496000"
+    "entry_price": "0.23496000",
+    "closed_price": "0.239",
+    "closed_at": "2025-08-22T20:30:00+03:30"
   },
   {
     "symbol": "SHIB-USDT",
@@ -3686,10 +3688,12 @@
     "time": "2025-08-22T20:18:58.834745+03:30",
     "reasons": "\u2705 RSI in overbought zone (74.16) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0000)\n\u2705 Price at resistance (0.0000)\n\u2705 Strong bearish candle (-0.37%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T20:18:58.834745+03:30",
     "risk_reward_ratio": 1.500000000000005,
-    "entry_price": "0.00001307"
+    "entry_price": "0.00001307",
+    "closed_price": "1.3291e-05",
+    "closed_at": "2025-08-22T20:30:00+03:30"
   },
   {
     "symbol": "AVAX-USDT",
@@ -3728,10 +3732,12 @@
     "time": "2025-08-22T20:19:28.009095+03:30",
     "reasons": "\u2705 RSI in overbought zone (73.77) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0239)\n\u2705 Price at resistance (7.2910)\n\u2705 Strong bearish candle (-0.51%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-22T20:19:28.009095+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "7.24700000"
+    "entry_price": "7.24700000",
+    "closed_price": "7.392",
+    "closed_at": "2025-08-22T20:30:00+03:30"
   },
   {
     "symbol": "KDA-USDT",
