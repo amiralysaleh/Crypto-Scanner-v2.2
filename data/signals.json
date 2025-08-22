@@ -3624,10 +3624,12 @@
     "time": "2025-08-22T17:52:20.921135+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 30.0321\n\u2705 MACD crossed above signal line by 12.6372\n\u2705 Volume surge (4.21X)\n\u2705 Strong bullish candle (+6.33%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-22T17:52:20.921135+03:30",
     "risk_reward_ratio": 1.4999999999999933,
-    "entry_price": "4562.07000000"
+    "entry_price": "4562.07000000",
+    "closed_price": "4640.64",
+    "closed_at": "2025-08-22T18:30:00+03:30"
   },
   {
     "symbol": "UNI-USDT",
@@ -3638,10 +3640,12 @@
     "time": "2025-08-22T17:52:36.041480+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.0018\n\u2705 MACD crossed above signal line by 0.0084\n\u2705 Volume surge (1.67X)\n\u2705 Strong bullish candle (+4.62%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-22T17:52:36.041480+03:30",
     "risk_reward_ratio": 1.50000000000001,
-    "entry_price": "10.68400000"
+    "entry_price": "10.68400000",
+    "closed_price": "10.9196",
+    "closed_at": "2025-08-22T18:30:00+03:30"
   },
   {
     "symbol": "AAVE-USDT",
@@ -3652,9 +3656,11 @@
     "time": "2025-08-22T17:52:59.497671+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 0.9233\n\u2705 MACD crossed above signal line by 0.5798\n\u2705 Volume surge (8.05X)\n\u2705 Strong bullish candle (+3.92%)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 68,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-22T17:52:59.497671+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "314.27100000"
+    "entry_price": "314.27100000",
+    "closed_price": "320.75",
+    "closed_at": "2025-08-22T18:00:00+03:30"
   }
 ]
