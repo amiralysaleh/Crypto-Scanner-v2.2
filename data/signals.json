@@ -3746,5 +3746,61 @@
     "created_at": "2025-08-22T20:20:13.788155+03:30",
     "risk_reward_ratio": 1.5,
     "entry_price": "0.40350000"
+  },
+  {
+    "symbol": "LTC-USDT",
+    "type": "SELL",
+    "current_price": "122.00000000",
+    "target_price": "119.87130021",
+    "stop_loss": "123.41913320",
+    "time": "2025-08-22T21:12:23.691115+03:30",
+    "reasons": "\u2705 RSI in overbought zone (72.71) and declining\n\u2705 Price near/above upper Bollinger Band (-1.1143)\n\u2705 Price at resistance (122.7400)\n\u2705 Strong bearish candle (-0.54%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-08-22T21:12:23.691115+03:30",
+    "risk_reward_ratio": 1.50000000000001,
+    "entry_price": "122.00000000"
+  },
+  {
+    "symbol": "APT-USDT",
+    "type": "SELL",
+    "current_price": "4.67470000",
+    "target_price": "4.58337620",
+    "stop_loss": "4.73558253",
+    "time": "2025-08-22T21:12:33.158902+03:30",
+    "reasons": "\u2705 RSI in overbought zone (72.24) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0407)\n\u2705 Price at resistance (4.7097)\n\u2705 Strong bearish candle (-0.56%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-08-22T21:12:33.158902+03:30",
+    "risk_reward_ratio": 1.5000000000000147,
+    "entry_price": "4.67470000"
+  },
+  {
+    "symbol": "VET-USDT",
+    "type": "SELL",
+    "current_price": "0.02507000",
+    "target_price": "0.02465257",
+    "stop_loss": "0.02534828",
+    "time": "2025-08-22T21:12:41.235950+03:30",
+    "reasons": "\u2705 RSI in overbought zone (75.28) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0002)\n\u2705 Price at resistance (0.0252)\n\u2705 Strong bearish candle (-0.44%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-08-22T21:12:41.235950+03:30",
+    "risk_reward_ratio": 1.5000000000000062,
+    "entry_price": "0.02507000"
+  },
+  {
+    "symbol": "RUNE-USDT",
+    "type": "SELL",
+    "current_price": "1.37780000",
+    "target_price": "1.35062634",
+    "stop_loss": "1.39591578",
+    "time": "2025-08-22T21:13:25.214398+03:30",
+    "reasons": "\u2705 RSI in overbought zone (74.52) and declining\n\u2705 Price near/above upper Bollinger Band (-0.0137)\n\u2705 Price at resistance (1.3900)\n\u2705 Strong bearish candle (-0.83%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
+    "score": 69,
+    "status": "active",
+    "created_at": "2025-08-22T21:13:25.214398+03:30",
+    "risk_reward_ratio": 1.5000000000000062,
+    "entry_price": "1.37780000"
   }
 ]
