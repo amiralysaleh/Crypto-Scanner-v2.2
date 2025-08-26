@@ -3896,9 +3896,11 @@
     "time": "2025-08-26T01:52:12.285214+03:30",
     "reasons": "\u2705 RSI in oversold zone (29.36) and improving\n\u2705 Price near/below lower Bollinger Band (0.0343)\n\u2705 Volume surge (1.69X)\n\u2705 Price at support (4.3924)\n\u2705 Strong bullish candle (+0.32%)",
     "score": 69,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-26T01:52:12.285214+03:30",
     "risk_reward_ratio": 1.5,
-    "entry_price": "4.42580000"
+    "entry_price": "4.42580000",
+    "closed_price": "4.5507",
+    "closed_at": "2025-08-26T16:00:00+03:30"
   }
 ]
