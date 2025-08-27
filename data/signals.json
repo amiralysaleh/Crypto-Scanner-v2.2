@@ -3912,10 +3912,12 @@
     "time": "2025-08-27T00:12:47.448544+03:30",
     "reasons": "\u2705 RSI in overbought zone (70.15) and declining\n\u2705 Price near/above upper Bollinger Band (0.0015)\n\u2705 Price at resistance (0.8194)\n\u2705 Strong bearish candle (-0.61%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-27T00:12:47.448544+03:30",
     "risk_reward_ratio": 1.4999999999999951,
-    "entry_price": "0.81210000"
+    "entry_price": "0.81210000",
+    "closed_price": "0.8221",
+    "closed_at": "2025-08-27T08:00:00+03:30"
   },
   {
     "symbol": "ZEC-USDT",
