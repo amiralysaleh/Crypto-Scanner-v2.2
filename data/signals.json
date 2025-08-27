@@ -3944,10 +3944,12 @@
     "time": "2025-08-27T08:51:35.026785+03:30",
     "reasons": "\u2705 RSI in overbought zone (73.18) and declining\n\u2705 Price near/above upper Bollinger Band (-0.2840)\n\u2705 Price at resistance (205.6600)\n\u2705 Strong bearish candle (-0.58%)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 69,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-27T08:51:35.026785+03:30",
     "risk_reward_ratio": 1.4999999999999942,
-    "entry_price": "203.96000000"
+    "entry_price": "203.96000000",
+    "closed_price": "206.69",
+    "closed_at": "2025-08-27T18:00:00+03:30"
   },
   {
     "symbol": "BNB-USDT",
