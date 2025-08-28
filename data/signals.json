@@ -3992,10 +3992,12 @@
     "time": "2025-08-28T01:09:24.983625+03:30",
     "reasons": "\u2705 Short EMA crossed below medium EMA by 0.0000\n\u2705 MACD crossed below signal line by -0.0000\n\u2705 Price near/above upper Bollinger Band (-0.0000)\n\u2705 Price at resistance (0.0000)\n\u2705 Bearish or neutral trend in 1-hour timeframe",
     "score": 74,
-    "status": "active",
+    "status": "stop_loss",
     "created_at": "2025-08-28T01:09:24.983625+03:30",
     "risk_reward_ratio": 1.5000000000000153,
-    "entry_price": "0.00001010"
+    "entry_price": "0.00001010",
+    "closed_price": "1.0224e-05",
+    "closed_at": "2025-08-28T08:30:00+03:30"
   },
   {
     "symbol": "BTC-USDT",
@@ -4006,9 +4008,11 @@
     "time": "2025-08-28T07:19:59.074752+03:30",
     "reasons": "\u2705 Short EMA crossed above medium EMA by 27.6716\n\u2705 MACD crossed above signal line by 18.6294\n\u2705 Price near/below lower Bollinger Band (956.1868)\n\u2705 Price at support (110877.9000)\n\u2705 Bullish or neutral trend in 1-hour timeframe",
     "score": 74,
-    "status": "active",
+    "status": "target_reached",
     "created_at": "2025-08-28T07:19:59.074752+03:30",
     "risk_reward_ratio": 1.4999999999999851,
-    "entry_price": "111913.70000000"
+    "entry_price": "111913.70000000",
+    "closed_price": "112969.1",
+    "closed_at": "2025-08-28T08:00:00+03:30"
   }
 ]
